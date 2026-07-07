@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect, useState } from "react";
 import type { ResumoData } from "./transaction/transaction";
 import { useRouter } from "next/navigation";

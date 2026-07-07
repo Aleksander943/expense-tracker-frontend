@@ -1,3 +1,5 @@
+"use client";
+
 import { useCallback, useRef, useState } from "react"
 import { Home } from "./home"
 import { NavBar } from "./navBar"
