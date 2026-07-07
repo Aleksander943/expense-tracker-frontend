@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || 'https://financeiro-api-1wmw.onrender.com',
+  baseURL:'https://financeiro-api-1wmw.onrender.com',
 });
 
 api.interceptors.request.use((config) => {
