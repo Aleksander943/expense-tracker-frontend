@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import type { ResumoData } from "./transaction/transaction";
-import { useNavigate } from "react-router-dom";
+import { useRouter } from "next/navigation";
 
 interface HomeProps {
   resumo: ResumoData;
@@ -16,7 +16,7 @@ const formatAmount = (value: number) =>
 
 export function Home({ resumo }: HomeProps) {
   const [usuario, setUsuario] = useState<string | null>("");
-  const navigate = useNavigate()
+  const router = useRouter()
 
   useEffect(() => {
     const nomeSalvo = localStorage.getItem("username");
@@ -34,7 +34,7 @@ export function Home({ resumo }: HomeProps) {
 
   const logout = () =>{
     localStorage.removeItem('token');
-    navigate("/")
+    router.push("/")
   }
 
   return (

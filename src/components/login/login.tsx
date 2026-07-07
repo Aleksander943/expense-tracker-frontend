@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Mail, Lock, ChartLine } from "lucide-react";
 import api from "../../services/api";
 import axios from "axios";
@@ -7,6 +8,7 @@ import axios from "axios";
 import { useState } from "react";
 
 export function Login() {
+  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -42,6 +44,7 @@ export function Login() {
       sessionStorage.setItem("isAuthenticated", "true");
 
       console.log("login feito com sucesso");
+      router.push("/dashboard");
     } catch (error) {
       if (axios.isAxiosError(error)) {
         const mensagem =

@@ -22,8 +22,27 @@ export function Register() {
     handleSubmit,
   } = useForm<FormData>();
 
-  const onSubmit = handleSubmit((data) =>{
-    
+  const onSubmit = handleSubmit((data) => {
+    setLoading(true);
+    setError("");
+
+    const nomeValido = data.nome.trim();
+    const emailValido = data.email.trim();
+
+    if (!nomeValido || !emailValido) {
+      setError("Preencha nome e e-mail.");
+      setLoading(false);
+      return;
+    }
+
+    if (data.password !== data.confirmPassword) {
+      setError("As senhas não conferem.");
+      setLoading(false);
+      return;
+    }
+
+    // TODO: integrar com endpoint real de cadastro.
+    setLoading(false);
   });
 
   return (
@@ -141,7 +160,6 @@ export function Register() {
             Já tem uma conta?{" "}
             <Link
               href="/"
-              type="button"
               className="text-[#2d6a4f] font-medium hover:opacity-70 transition-opacity"
             >
               Entrar
