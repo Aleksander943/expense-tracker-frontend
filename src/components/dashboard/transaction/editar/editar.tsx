@@ -1,4 +1,6 @@
-import { useEffect, useState } from "react";
+"use client";
+
+import { useState } from "react";
 import { Button } from "../../../ui/button";
 import {
   Dialog,
@@ -32,34 +34,26 @@ type PropsEditar = {
 
 export function EditarTransaction({ open, onOpenChange, onCreated, transacao }: PropsEditar) {
   const [description, setDescription] = useState(transacao.description)
-const [value, setValue] = useState(String(transacao.value ?? ""))
-const [category, setCategory] = useState(transacao.category ?? "")
-const [type, setType] = useState(transacao.type)
-const [date, setDate] = useState(transacao.date ?? new Date().toISOString().split("T")[0])
+  const [value, setValue] = useState(String(transacao.value ?? ""))
+  const [category, setCategory] = useState(transacao.category ?? "")
+  const [type, setType] = useState(transacao.type)
+  const [date, setDate] = useState(transacao.date ?? new Date().toISOString().split("T")[0])
 
-useEffect(() => {
-    setDescription(transacao.description)
-    setValue(String(transacao.value ?? ""))
-    setCategory(transacao.category ?? "")
-    setType(transacao.type)
-    setDate(transacao.date ?? new Date().toISOString().split("T")[0])
-  }, [transacao])
-
- const handleOpenChange = (isOpen: boolean) => {
-  onOpenChange(isOpen) // ✅ troca setOpen por onOpenChange
-}
-
-const edit = async (id: string) => {
-  try {
-    await api.put(`/transaction/${id}`, { description, value: Number(value), category, type, date });
-    alert("Editado com sucesso");
-    onCreated();
-    onOpenChange(false);
-  } catch (e) {
-    console.error("ERRO:", e);
-    alert("Erro ao editar");
+  const handleOpenChange = (isOpen: boolean) => {
+    onOpenChange(isOpen)
   }
-};
+
+  const edit = async (id: string) => {
+    try {
+      await api.put(`/transaction/${id}`, { description, value: Number(value), category, type, date });
+      alert("Editado com sucesso");
+      onCreated();
+      onOpenChange(false);
+    } catch (error) {
+      console.error("ERRO:", error);
+      alert("Erro ao editar");
+    }
+  };
 
 
   return (

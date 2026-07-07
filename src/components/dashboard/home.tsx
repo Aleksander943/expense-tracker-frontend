@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import type { ResumoData } from "./transaction/transaction";
 import { useRouter } from "next/navigation";
 
@@ -17,13 +17,11 @@ const formatAmount = (value: number) =>
 
 
 export function Home({ resumo }: HomeProps) {
-  const [usuario, setUsuario] = useState<string | null>("");
+  const [usuario] = useState<string | null>(() => {
+    if (typeof window === "undefined") return null;
+    return localStorage.getItem("username");
+  });
   const router = useRouter()
-
-  useEffect(() => {
-    const nomeSalvo = localStorage.getItem("username");
-    setUsuario(nomeSalvo);
-  }, []);
 
 
   const percent = resumo.receita > 0

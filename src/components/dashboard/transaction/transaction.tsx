@@ -1,3 +1,5 @@
+"use client";
+
 import { useState, useEffect, useCallback, useMemo } from "react";
 import { AdicionarTransaction } from "./novo/adicionarTransaction";
 import { Pencil, Trash } from "lucide-react";
@@ -40,14 +42,6 @@ type TransactionProps = {
 
 const months = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun"];
 
-const formatMoney = (value: number) =>
-  value.toLocaleString("pt-BR", {
-    style: "currency",
-    currency: "BRL",
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0,
-  });
-
 export function Transaction({ onResumoChange }: TransactionProps) {
   const [open, setOpen] = useState(false);
   const [transactions, setTransactions] = useState<ApiTransaction[]>([]);
@@ -68,6 +62,7 @@ export function Transaction({ onResumoChange }: TransactionProps) {
   }, []);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchTransactions();
   }, [fetchTransactions]);
 
@@ -252,6 +247,7 @@ export function Transaction({ onResumoChange }: TransactionProps) {
       </div>
       {transacaoParaEditar && (
         <EditarTransaction
+          key={transacaoParaEditar.id}
           open={openEditar}
           onOpenChange={setOpenEditar}
           onCreated={fetchTransactions}

@@ -1,3 +1,5 @@
+"use client";
+
 import { useState } from "react";
 import { Button } from "../../../ui/button";
 import {
@@ -43,7 +45,7 @@ export function AdicionarTransaction({ open, onOpenChange, onCreated }: Props) {
       setCategory("");
       onOpenChange(false);
       onCreated?.();
-    } catch (error) {
+    } catch {
       alert("Erro ao criar transação.");
     }
   };
