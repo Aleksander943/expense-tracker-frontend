@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
-import "globals";
+import './globals.css';
 
-// eslint-disable-next-line react-refresh/only-export-components
 export const metadata: Metadata = {
   title: "Expense Tracker",
   description: "Controle financeiro",
