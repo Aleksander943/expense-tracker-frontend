@@ -5,6 +5,9 @@ import { Apresentacao } from "./apresentacao/apresentacao";
 import { useState } from "react";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
+import { useRouter } from "next/navigation";
+import axios from "axios";
+import api from "../../services/api";
 
 type FormData = {
 nome: string
@@ -14,6 +17,7 @@ confirmPassword: string
 }
 
 export function Register() {
+  const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -22,7 +26,7 @@ export function Register() {
     handleSubmit,
   } = useForm<FormData>();
 
-  const onSubmit = handleSubmit((data) => {
+  const onSubmit = handleSubmit(async (data) => {
     setLoading(true);
     setError("");
 
@@ -41,8 +45,27 @@ export function Register() {
       return;
     }
 
-    // TODO: integrar com endpoint real de cadastro.
-    setLoading(false);
+    try {
+      await api.post("/register", {
+        name: nomeValido,
+        email: emailValido,
+        password: data.password,
+      });
+
+      router.push("/");
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        const mensagem =
+          error.response?.data?.error ||
+          error.response?.data?.mensagem ||
+          "Erro ao criar conta. Tente novamente.";
+        setError(mensagem);
+      } else {
+        setError("Erro ao criar conta. Tente novamente.");
+      }
+    } finally {
+      setLoading(false);
+    }
   });
 
   return (
