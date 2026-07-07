@@ -1,200 +1,153 @@
-import type { FormEvent } from "react";
-import { Mail, Lock, ChevronLeft, User, Check, ChartLine } from "lucide-react";
-import { useNavigate } from "react-router-dom";
-import api from "../../services/api";
+"use client";
+
+import { Mail, Lock, User, ChartLine } from "lucide-react";
+import { Apresentacao } from "./apresentacao/apresentacao";
+import { useState } from "react";
+import Link from "next/link";
+import { useForm } from "react-hook-form";
+
+type FormData = {
+nome: string
+email: string
+password: string
+confirmPassword: string
+}
 
 export function Register() {
-  const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const {
+    register,
+    handleSubmit,
+  } = useForm<FormData>();
 
-  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-
-    const fd = new FormData(e.currentTarget);
-    const name = String(fd.get("name") ?? "").trim();
-    const email = String(fd.get("email") ?? "").trim().toLowerCase();
-    const password = String(fd.get("password") ?? "").trim();
-
-    if (!name || !email || !password) {
-      alert("Preencha todos os campos");
-      return;
-    }
-
-    try {
-      await api.post("/users", {
-        name,
-        email,
-        password,
-      });
-      alert("Cadastro realizado com sucesso!");
-      localStorage.removeItem("token");
-      sessionStorage.removeItem("isAuthenticated");
-      navigate("/", { replace: true });
-    } catch (error) {
-      alert("Erro ao cadastrar");
-      console.error(error);
-    }
-  }
+  const onSubmit = handleSubmit((data) =>{
+    
+  });
 
   return (
-    <div className="min-h-screen bg-[#f7f7f4] px-6 py-10 font-sans">
-      {/* Back button */}
-      <button className="mb-8 flex items-center gap-2 text-[#2d6a4f]"
-      onClick={() => window.history.back()}>
-        <ChevronLeft />
-        <span className="text-[13px] font-semibold">Voltar</span>
-      </button>
+    <div className="min-h-screen lg:grid lg:grid-cols-[1.05fr_1fr] bg-[#f7f7f4]">
+      <Apresentacao />
 
-      {/* Header */}
-      <div className="mb-8">
-        <div className="mb-4 flex items-center gap-2">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#2d6a4f]">
-             <ChartLine className="w-4 h-4 text-white" />
+      {/* Form panel */}
+      <div className="min-h-screen lg:min-h-0 flex items-center justify-center px-8 lg:px-16 lg:bg-[#f8f6f0]">
+        <div className="w-full max-w-sm lg:max-w-md bg-white lg:bg-transparent rounded-2xl lg:rounded-none shadow-[0_2px_8px_rgba(0,0,0,0.06),0_16px_40px_rgba(0,0,0,0.08)] lg:shadow-none px-8 py-12 lg:px-0 lg:py-0">
+          {/* Logo — mobile only, desktop shows the brand panel logo instead */}
+          <div className="lg:hidden flex items-center gap-2 mb-8">
+            <div className="w-8 h-8 bg-[#2d6a4f] rounded-lg flex items-center justify-center">
+              <ChartLine className="w-4 h-4 text-white" />
+            </div>
+            <span className="font-semibold text-[#1a1a18] tracking-tight text-sm">
+              Finly
+            </span>
           </div>
-          <span className="text-[15px] font-semibold tracking-tight text-[#1a1a18]">
-            Finly
-          </span>
-        </div>
-        <p className="mb-1 text-[12px] uppercase tracking-[0.07em] text-[#2d6a4f]">
-          Criar conta
-        </p>
-        <h1 className="font-serif text-[28px] font-semibold leading-tight tracking-tight text-[#1a1a18]">
-          Comece a controlar
-          <br />
-          suas finanças
-        </h1>
-      </div>
 
-      {/* Form */}
-      <div className="flex flex-col gap-4">
-        {/* Nome completo */}
-        <form id="register-form" onSubmit={handleSubmit}>
-          
-          <div className="flex flex-col gap-[6px]">
-            <label className="text-[11px] font-semibold uppercase tracking-[0.05em] text-[#9a9a94]">
-              Nome completo
-            </label>
-            <div className="relative flex items-center">
-              <span className="absolute left-[14px] text-[#c4c4bc]">
+          {/* Header */}
+          <div className="mb-6">
+            <p className="text-xs text-[#9a9a94] mb-1 tracking-wide">
+              Comece agora
+            </p>
+            <h1
+              className="text-2xl lg:text-[28px] font-semibold text-[#1a1a18] tracking-tight leading-tight"
+              style={{ fontFamily: "'Georgia', serif" }}
+            >
+              Crie sua conta
+            </h1>
+          </div>
+
+          {/* Error Message */}
+          {error && (
+            <div className="bg-red-50 border border-red-200 rounded-lg p-3 mb-4">
+              <p className="text-sm text-red-700 font-medium">⚠️ {error}</p>
+            </div>
+          )}
+
+          {/* Form */}
+          <form onSubmit={onSubmit} className="flex flex-col gap-3">
+            {/* Nome */}
+            <div className="relative">
+              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[#c4c4bc]">
                 <User className="w-4 h-4" />
               </span>
               <input
-              name="name"
                 type="text"
-                placeholder="João Silva"
-                className="w-full rounded-xl border border-[#ebebeb] bg-white py-3 pl-10 pr-4 text-[14px] text-[#1a1a18] placeholder-[#c4c4bc] outline-none focus:border-[#2d6a4f] focus:ring-2 focus:ring-[#2d6a4f]/10"
+                {...register("nome")}
+                placeholder="Nome completo"
+                className="bg-white w-full pl-9 pr-3 py-3 border border-[#ebebeb] rounded-xl text-sm text-[#1a1a18] placeholder-[#c4c4bc] outline-none transition-all focus:border-[#2d6a4f] focus:ring-2 focus:ring-[#2d6a4f]/10"
               />
             </div>
-          </div>
 
-          {/* E-mail */}
-          <div className="flex flex-col gap-[6px]">
-            <label className="text-[11px] font-semibold uppercase tracking-[0.05em] text-[#9a9a94]">
-              E-mail
-            </label>
-            <div className="relative flex items-center">
-              <span className="absolute left-[14px] text-[#c4c4bc]">
+            {/* Email */}
+            <div className="relative">
+              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[#c4c4bc]">
                 <Mail className="w-4 h-4" />
               </span>
               <input
-                name="email"    
                 type="email"
+                {...register("email")}
                 placeholder="seu@email.com"
-                className="w-full rounded-xl border border-[#ebebeb] bg-white py-3 pl-10 pr-4 text-[14px] text-[#1a1a18] placeholder-[#c4c4bc] outline-none focus:border-[#2d6a4f] focus:ring-2 focus:ring-[#2d6a4f]/10"
+                className="bg-white w-full pl-9 pr-3 py-3 border border-[#ebebeb] rounded-xl text-sm text-[#1a1a18] placeholder-[#c4c4bc] outline-none transition-all focus:border-[#2d6a4f] focus:ring-2 focus:ring-[#2d6a4f]/10"
               />
             </div>
-          </div>
 
-          {/* Senha */}
-          <div className="flex flex-col gap-[6px]">
-            <label className="text-[11px] font-semibold uppercase tracking-[0.05em] text-[#9a9a94]">
-              Senha
-            </label>
-            <div className="relative flex items-center">
-              <span className="absolute left-[14px] text-[#c4c4bc]">
+            {/* Senha */}
+            <div className="relative">
+              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[#c4c4bc]">
                 <Lock className="w-4 h-4" />
               </span>
               <input
-                name="password"
-                type="password"
-                placeholder="Mínimo 8 caracteres"
-                className="w-full rounded-xl border border-[#ebebeb] bg-white py-3 pl-10 pr-14 text-[14px] text-[#1a1a18] placeholder-[#c4c4bc] outline-none focus:border-[#2d6a4f] focus:ring-2 focus:ring-[#2d6a4f]/10"
+                {...register("password")}
+                placeholder="********"
+                className="bg-white w-full pl-9 pr-14 py-3 border border-[#ebebeb] rounded-xl text-sm text-[#1a1a18] placeholder-[#c4c4bc] outline-none transition-all focus:border-[#2d6a4f] focus:ring-2 focus:ring-[#2d6a4f]/10"
               />
-              <button type="button" className="absolute right-[14px] text-[11px] font-semibold text-[#9a9a94]">
-                Ver
+              <button
+                type="button"
+                onClick={() => setShowPassword((prev) => !prev)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-[10px] font-medium text-[#9a9a94] hover:text-[#1a1a18] transition-colors"
+              >
+                {showPassword ? "Ocultar" : "Mostrar"}
               </button>
             </div>
-          </div>
 
-          {/* Confirmar senha */}
-          <div className="flex flex-col gap-[6px]">
-            <label className="text-[11px] font-semibold uppercase tracking-[0.05em] text-[#9a9a94]">
-              Confirmar senha
-            </label>
-            <div className="relative flex items-center">
-              <span className="absolute left-[14px] text-[#c4c4bc]">
+            {/* Confirmar senha */}
+            <div className="relative">
+              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[#c4c4bc]">
                 <Lock className="w-4 h-4" />
               </span>
               <input
-                name="confirmPassword"
-                type="password"
-                placeholder="Repita sua senha"
-                className="w-full rounded-xl border border-[#ebebeb] bg-white py-3 pl-10 pr-4 text-[14px] text-[#1a1a18] placeholder-[#c4c4bc] outline-none focus:border-[#2d6a4f] focus:ring-2 focus:ring-[#2d6a4f]/10"
+                {...register("confirmPassword")}
+                placeholder="Confirme a senha"
+                className="bg-white w-full pl-9 pr-14 py-3 border border-[#ebebeb] rounded-xl text-sm text-[#1a1a18] placeholder-[#c4c4bc] outline-none transition-all focus:border-[#2d6a4f] focus:ring-2 focus:ring-[#2d6a4f]/10"
               />
+              <button
+                type="button"
+                onClick={() => setShowPassword((prev) => !prev)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-[10px] font-medium text-[#9a9a94] hover:text-[#1a1a18] transition-colors"
+              ></button>
             </div>
-          </div>
-        </form>
 
-        {/* Terms */}
-        <div className="flex items-start gap-3 pt-1">
-          <div className="mt-[2px] flex h-[18px] w-[18px] shrink-0 items-center justify-center rounded-[5px] border-2 border-[#2d6a4f] bg-[#2d6a4f]">
-           <Check  className="text-white"/>
-          </div>
-          <p className="text-[12px] leading-relaxed text-[#9a9a94]">
-            Concordo com os{" "}
-            <span className="font-semibold text-[#2d6a4f]">Termos de uso</span>{" "}
-            e a{" "}
-            <span className="font-semibold text-[#2d6a4f]">
-              Política de privacidade
-            </span>
+            {/* Submit */}
+            <input
+              type="submit"
+              value={loading ? "Criando conta..." : "Criar conta"}
+              disabled={loading}
+              className="mt-2 w-full bg-[#2d6a4f] hover:bg-[#235c43] active:scale-[0.99] text-white font-medium text-sm py-3 rounded-xl cursor-pointer transition-all disabled:opacity-60 disabled:cursor-not-allowed"
+            />
+          </form>
+
+          {/* Login link */}
+          <p className="text-center text-xs text-[#9a9a94] mt-5">
+            Já tem uma conta?{" "}
+            <Link
+              href="/"
+              type="button"
+              className="text-[#2d6a4f] font-medium hover:opacity-70 transition-opacity"
+            >
+              Entrar
+            </Link>
           </p>
         </div>
-
-        {/* Submit */}
-        <button type="submit" form="register-form" className="mt-2 w-full rounded-xl bg-[#2d6a4f] py-[14px] text-[14px] font-semibold text-white transition-all active:scale-[0.99]">
-          Criar conta gratuitamente
-        </button>
-
-        {/* Divider */}
-        <div className="flex items-center gap-3">
-          <div className="h-px flex-1 bg-[#ebebeb]" />
-          <span className="text-[11px] text-[#c4c4bc]">ou</span>
-          <div className="h-px flex-1 bg-[#ebebeb]" />
-        </div>
-
-        {/* Login link */}
-        <p className="text-center text-[13px] text-[#9a9a94]">
-          Já tem conta?{" "}
-          <button type="button" onClick={() => navigate("/")} className="font-semibold text-[#2d6a4f]">Entrar</button>
-        </p>
-      </div>
-
-      {/* Footer */}
-      <div className="mt-8 flex items-center justify-center gap-[6px]">
-        <svg
-          width="11"
-          height="11"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="#c4c4bc"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
-          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-        </svg>
-        <span className="text-[11px] text-[#c4c4bc]">
-          Protegido por criptografia AES-256
-        </span>
       </div>
     </div>
   );
