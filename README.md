@@ -1,6 +1,6 @@
 # Expense Tracker Frontend
 
-Aplicação frontend para controle financeiro pessoal, construída com Next.js, React, TypeScript e Tailwind CSS. O projeto organiza autenticação, dashboard, cadastro de usuário e integração com API em uma interface responsiva voltada para uso no navegador e no mobile.
+Aplicação web desenvolvida com Next.js e TypeScript para gerenciamento financeiro pessoal. Permite autenticação de usuários, cadastro, edição e exclusão de despesas, integração com API REST e interface responsiva.
 
 ## Visão Geral
 
