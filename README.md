@@ -61,3 +61,22 @@ A aplicação consome uma API externa para autenticação e transações. Se a A
 
 ## Preview
 <img width="1866" height="997" alt="image" src="https://github.com/user-attachments/assets/022d5afa-b419-4343-abcb-c7f9ef7afde2" />
+
+## 🌐 Demo
+https://frontend-efoxm6h2h-aleksander943s-projects.vercel.app/
+
+## Funcionalidades
+
+✅ Login
+
+✅ Cadastro
+
+✅ JWT Authentication
+
+✅ CRUD de despesas
+
+✅ Filtros
+
+✅ Validação de formulários
+
+✅ Responsivo
