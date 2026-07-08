@@ -58,3 +58,6 @@ A aplicação consome uma API externa para autenticação e transações. Se a A
 - O projeto foi migrado para Next.js e não depende mais de Vite.
 - A estilização global é carregada a partir do App Router com Tailwind CSS.
 - O dashboard é renderizado como client component por usar estado, efeitos e navegação interna.
+
+## Preview
+<img width="1866" height="997" alt="image" src="https://github.com/user-attachments/assets/022d5afa-b419-4343-abcb-c7f9ef7afde2" />
