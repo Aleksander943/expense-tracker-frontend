@@ -1,5 +1,5 @@
-import { Register } from "src/components/register/Register";
+import { FormRegister } from "src/app/register/components/formRegister";
 
 export default function RegisterPage() {
-  return <Register />;
+  return( <FormRegister />);
 }

@@ -1,13 +1,14 @@
 "use client";
 
 import { Mail, Lock, User, ChartLine } from "lucide-react";
-import { Apresentacao } from "./apresentacao/apresentacao";
+
 import { useState } from "react";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import axios from "axios";
-import api from "../../services/api";
+import { Estilizacao } from "./estilizacao";
+
 
 type FormData = {
 nome: string
@@ -16,62 +17,18 @@ password: string
 confirmPassword: string
 }
 
-export function Register() {
-  const router = useRouter();
+export function FormRegister() {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+
   const {
     register,
-    handleSubmit,
   } = useForm<FormData>();
-
-  const onSubmit = handleSubmit(async (data) => {
-    setLoading(true);
-    setError("");
-
-    const nomeValido = data.nome.trim();
-    const emailValido = data.email.trim();
-
-    if (!nomeValido || !emailValido) {
-      setError("Preencha nome e e-mail.");
-      setLoading(false);
-      return;
-    }
-
-    if (data.password !== data.confirmPassword) {
-      setError("As senhas não conferem.");
-      setLoading(false);
-      return;
-    }
-
-    try {
-      await api.post("/register", {
-        name: nomeValido,
-        email: emailValido,
-        password: data.password,
-      });
-
-      router.push("/");
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        const mensagem =
-          error.response?.data?.error ||
-          error.response?.data?.mensagem ||
-          "Erro ao criar conta. Tente novamente.";
-        setError(mensagem);
-      } else {
-        setError("Erro ao criar conta. Tente novamente.");
-      }
-    } finally {
-      setLoading(false);
-    }
-  });
 
   return (
     <div className="min-h-screen lg:grid lg:grid-cols-[1.05fr_1fr] bg-[#f7f7f4]">
-      <Apresentacao />
-
+      <Estilizacao />
       {/* Form panel */}
       <div className="min-h-screen lg:min-h-0 flex items-center justify-center px-8 lg:px-16 lg:bg-[#f8f6f0]">
         <div className="w-full max-w-sm lg:max-w-md bg-white lg:bg-transparent rounded-2xl lg:rounded-none shadow-[0_2px_8px_rgba(0,0,0,0.06),0_16px_40px_rgba(0,0,0,0.08)] lg:shadow-none px-8 py-12 lg:px-0 lg:py-0">
@@ -106,7 +63,7 @@ export function Register() {
           )}
 
           {/* Form */}
-          <form onSubmit={onSubmit} className="flex flex-col gap-3">
+          <form className="flex flex-col gap-3">
             {/* Nome */}
             <div className="relative">
               <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[#c4c4bc]">
