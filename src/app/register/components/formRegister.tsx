@@ -17,8 +17,7 @@ confirmPassword: string
 
 export function FormRegister() {
   const [showPassword, setShowPassword] = useState(false);
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
+
 
   const {
     register,
@@ -53,12 +52,7 @@ export function FormRegister() {
             </h1>
           </div>
 
-          {/* Error Message */}
-          {error && (
-            <div className="bg-red-50 border border-red-200 rounded-lg p-3 mb-4">
-              <p className="text-sm text-red-700 font-medium">⚠️ {error}</p>
-            </div>
-          )}
+          
 
           {/* Form */}
           <form className="flex flex-col gap-3">
@@ -127,8 +121,7 @@ export function FormRegister() {
             {/* Submit */}
             <input
               type="submit"
-              value={loading ? "Criando conta..." : "Criar conta"}
-              disabled={loading}
+            
               className="mt-2 w-full bg-[#2d6a4f] hover:bg-[#235c43] active:scale-[0.99] text-white font-medium text-sm py-3 rounded-xl cursor-pointer transition-all disabled:opacity-60 disabled:cursor-not-allowed"
             />
           </form>

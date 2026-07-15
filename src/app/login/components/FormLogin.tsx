@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { Mail, Lock, ChartLine} from "lucide-react";
 
 
@@ -9,12 +8,11 @@ import { useState } from "react";
 import { Estilizacao } from "./estilizacao";
 
 export function Login() {
-  const router = useRouter();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
+
 
   return (
     <div className="min-h-screen lg:grid lg:grid-cols-[1.05fr_1fr] bg-[#f7f7f4]">
@@ -44,15 +42,7 @@ export function Login() {
               Acesse sua conta
             </h1>
           </div>
-
-      
-          {error && (
-            <div className="bg-red-50 border border-red-200 rounded-lg p-3 mb-4">
-              <p className="text-sm text-red-700 font-medium">⚠️ {error}</p>
-            </div>
-          )}
-
-  
+          
           <form className="flex flex-col gap-3">
        
             <div className="relative">
@@ -104,8 +94,7 @@ export function Login() {
            
             <input
               type="submit"
-              value={loading ? "Entrando..." : "Entrar"}
-              disabled={loading}
+      
               className="mt-1 w-full bg-[#2d6a4f] hover:bg-[#235c43] active:scale-[0.99] text-white font-medium text-sm py-3 rounded-xl cursor-pointer transition-all disabled:opacity-60 disabled:cursor-not-allowed"
             />
           </form>
