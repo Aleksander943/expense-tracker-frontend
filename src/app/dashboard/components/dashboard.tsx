@@ -289,7 +289,7 @@ export function Dashboard() {
                   return (
                     <li
                       key={tx.id}
-                      className="flex items-center gap-3 sm:gap-4 px-5 sm:px-6 py-3.5 hover:bg-[#faf9f5] transition-colors"
+                      className="flex items-center gap-3 sm:gap-4 px-5 sm:px-6 py-3.5 hover:bg-[rgb(250,249,245)] transition-colors"
                     >
                       <div
                         className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0"
