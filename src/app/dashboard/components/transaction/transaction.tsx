@@ -3,9 +3,10 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
 import { AdicionarTransaction } from "./novo/adicionarTransaction";
 import { Pencil, Trash } from "lucide-react";
-import api from "../../../services/api";
+
 import deletarTransacao from "./delete/deletar";
 import { EditarTransaction } from "./editar/editar";
+import api from "@/services/api";
 
 // Mapeamento de ícones e cores por categoria
 const categoryMap: Record<string, { icon: string; color: string }> = {

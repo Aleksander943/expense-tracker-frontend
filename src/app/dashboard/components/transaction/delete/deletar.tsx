@@ -1,5 +1,4 @@
-
-import api from "../../../../services/api";
+import api from "@/services/api";
 
 const deletarTransacao = async (id: string, onSucess: () => void) => {
   try {

@@ -5,8 +5,6 @@ import { Mail, Lock, User, ChartLine } from "lucide-react";
 import { useState } from "react";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
-import { useRouter } from "next/navigation";
-import axios from "axios";
 import { Estilizacao } from "./estilizacao";
 
 

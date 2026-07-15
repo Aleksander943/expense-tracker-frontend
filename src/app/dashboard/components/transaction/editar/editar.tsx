@@ -1,20 +1,14 @@
 "use client";
 
-import { useState } from "react";
-import { Button } from "../../../ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "../../../ui/dialog";
-import { Field, FieldGroup } from "../../../ui/field";
-import { Input } from "../../../ui/input";
-import { Label } from "../../../ui/label";
+import { Button } from "@/components/ui/button";
+import { Dialog,DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Field, FieldGroup } from "@/components/ui/field";
+import { Input } from "@/components/ui/input";
+import api from "@/services/api";
 import { Plus } from "lucide-react";
-import api from "../../../../services/api";
+import { Label } from "@/components/ui/label";
+import { useState } from "react";
+
 
 
 

@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Mail, Lock, ChartLine, Grid } from "lucide-react";
-import axios from "axios";
+import { Mail, Lock, ChartLine} from "lucide-react";
+
 
 import { useState } from "react";
 import { Estilizacao } from "./estilizacao";
