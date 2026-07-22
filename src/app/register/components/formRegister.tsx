@@ -4,35 +4,53 @@ import { Mail, Lock, User, ChartLine } from "lucide-react";
 
 import { useState } from "react";
 import Link from "next/link";
-import { useForm } from "react-hook-form";
+import { useForm, type SubmitHandler, type UseFormHandleSubmit } from "react-hook-form";
 import { useRouter } from "next/navigation";
-import axios from "axios";
 import { Estilizacao } from "./estilizacao";
-
+import api from "@/services/api";
 
 type FormData = {
-nome: string
-email: string
-password: string
-confirmPassword: string
-}
+  nome: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+};
 
 export function FormRegister() {
+  const {register, handleSubmit} = useForm<FormData>();
+
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
-  const {
-    register,
-  } = useForm<FormData>();
+  const onSubmit: SubmitHandler<FormData> = async (data) => { 
+    try {
+      setLoading(true)
+      setError("")
+
+      const response =  await api.post("/users", {
+        nome: data.nome,
+        email: data.email,
+        password: data.password,
+      });
+
+      console.log("Cadastro realizado com sucesso!", response.data);
+
+      router.push("/");
+    } catch (error) {
+      setLoading(false)
+      setError("");
+      console.log("Erro na API", error)
+    }
+  };
 
   return (
     <div className="min-h-screen lg:grid lg:grid-cols-[1.05fr_1fr] bg-[#f7f7f4]">
       <Estilizacao />
-      {/* Form panel */}
+
       <div className="min-h-screen lg:min-h-0 flex items-center justify-center px-8 lg:px-16 lg:bg-[#f8f6f0]">
         <div className="w-full max-w-sm lg:max-w-md bg-white lg:bg-transparent rounded-2xl lg:rounded-none shadow-[0_2px_8px_rgba(0,0,0,0.06),0_16px_40px_rgba(0,0,0,0.08)] lg:shadow-none px-8 py-12 lg:px-0 lg:py-0">
-          {/* Logo — mobile only, desktop shows the brand panel logo instead */}
           <div className="lg:hidden flex items-center gap-2 mb-8">
             <div className="w-8 h-8 bg-[#2d6a4f] rounded-lg flex items-center justify-center">
               <ChartLine className="w-4 h-4 text-white" />
@@ -42,7 +60,6 @@ export function FormRegister() {
             </span>
           </div>
 
-          {/* Header */}
           <div className="mb-6">
             <p className="text-xs text-[#9a9a94] mb-1 tracking-wide">
               Comece agora
@@ -55,16 +72,15 @@ export function FormRegister() {
             </h1>
           </div>
 
-          {/* Error Message */}
           {error && (
             <div className="bg-red-50 border border-red-200 rounded-lg p-3 mb-4">
               <p className="text-sm text-red-700 font-medium">⚠️ {error}</p>
             </div>
           )}
 
-          {/* Form */}
-          <form className="flex flex-col gap-3">
-            {/* Nome */}
+          <form 
+          onSubmit={handleSubmit(onSubmit)}
+          className="flex flex-col gap-3">
             <div className="relative">
               <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[#c4c4bc]">
                 <User className="w-4 h-4" />
@@ -77,7 +93,6 @@ export function FormRegister() {
               />
             </div>
 
-            {/* Email */}
             <div className="relative">
               <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[#c4c4bc]">
                 <Mail className="w-4 h-4" />
@@ -90,7 +105,6 @@ export function FormRegister() {
               />
             </div>
 
-            {/* Senha */}
             <div className="relative">
               <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[#c4c4bc]">
                 <Lock className="w-4 h-4" />
@@ -109,7 +123,6 @@ export function FormRegister() {
               </button>
             </div>
 
-            {/* Confirmar senha */}
             <div className="relative">
               <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[#c4c4bc]">
                 <Lock className="w-4 h-4" />
@@ -126,7 +139,6 @@ export function FormRegister() {
               ></button>
             </div>
 
-            {/* Submit */}
             <input
               type="submit"
               value={loading ? "Criando conta..." : "Criar conta"}
@@ -135,7 +147,6 @@ export function FormRegister() {
             />
           </form>
 
-          {/* Login link */}
           <p className="text-center text-xs text-[#9a9a94] mt-5">
             Já tem uma conta?{" "}
             <Link
