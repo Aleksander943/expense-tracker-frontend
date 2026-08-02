@@ -1,46 +1,9 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Field, FieldGroup } from "@/components/ui/field";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import api from "@/services/api";
-import { Plus } from "lucide-react";
-import { useState } from "react";
-
-
-type Props = {
-  open: boolean;
-  onOpenChange: (value: boolean) => void;
-  onCreated?: () => void;
-};
-
-export function AdicionarTransaction({ open, onOpenChange, onCreated }: Props) {
-  const [description, setDescription] = useState("");
-  const [value, setValue] = useState("");
-  const [category, setCategory] = useState("");
-  const [type, setType] = useState("receita");
-  const [date, setDate] = useState(new Date().toISOString().split("T")[0]);
-
+export function AdicionarTransaction() {
+  
   const criar = async () => {
-    try {
-      await api.post("/transaction", {
-        description,
-        value: Number(value),
-        category,
-        date,
-        type,
-      });
-
-      alert("Transação criada com sucesso!");
-      setDescription("");
-      setValue("");
-      setCategory("");
-      onOpenChange(false);
-      onCreated?.();
-    } catch {
-      alert("Erro ao criar transação.");
+   
     }
   };
 
@@ -107,21 +70,7 @@ export function AdicionarTransaction({ open, onOpenChange, onCreated }: Props) {
 
           <Field>
             <Label htmlFor="category" className="mb-[6px] block text-[11px] font-semibold uppercase text-[#9a9a94]">Categoria</Label>
-            <select
-              id="category"
-              value={category}
-              onChange={(e) => setCategory(e.target.value)}
-              className="w-full rounded-xl border border-[#ebebeb] bg-white py-3 px-4 text-[14px] outline-none"
-            >
-              <option value="" disabled>Selecione...</option>
-              <option value="trabalho">💼 Trabalho</option>
-              <option value="moradia">🏠 Moradia</option>
-              <option value="alimentacao">🍽️ Alimentação</option>
-              <option value="saude">💊 Saúde</option>
-              <option value="lazer">🎬 Lazer</option>
-              <option value="transporte">🚗 Transporte</option>
-              <option value="investimento">📈 Investimento</option>
-            </select>
+
           </Field>
 
           <Field>
