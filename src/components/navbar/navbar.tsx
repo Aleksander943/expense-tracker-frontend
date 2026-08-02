@@ -3,34 +3,37 @@
 import { ArrowDownLeft, ArrowUpRight, ChevronsUpDown, LayoutDashboard, LineChart, LogOut, Settings, Wallet, X } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { AuthContext } from "@/contexts/authContext";
 
 export const NavBar = () =>{
   const [sidebarOpen, setSidebarOpen]   = useState(true);
   const [mobileMenuOpen, setMobileMenu] = useState(false);
   const router = useRouter();
 
-const navItems = [
-  { icon: LayoutDashboard, label: "Dashboard",  active: true  },
-  { icon: ArrowUpRight,    label: "Receitas (Em desenvolvimento)",   active: false },
-  { icon: ArrowDownLeft,   label: "Despesas (Em desenvolvimento)",   active: false },
-  { icon: Wallet,          label: "Contas (Em desenvolvimento)",     active: false },
-  { icon: LineChart,       label: "Relatórios (Em desenvolvimento)", active: false },
-];
+
+
+  const navItems = [
+    { icon: LayoutDashboard, label: "Dashboard",  active: true  },
+    { icon: ArrowUpRight,    label: "Receitas (Em desenvolvimento)",   active: false },
+    { icon: ArrowDownLeft,   label: "Despesas (Em desenvolvimento)",   active: false },
+    { icon: Wallet,          label: "Contas (Em desenvolvimento)",     active: false },
+    { icon: LineChart,       label: "Relatórios (Em desenvolvimento)", active: false },
+  ];
  
-const fmt = (v: number) =>
-  v.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
 
   return(
+
     <aside
-        className={`
-          fixed lg:relative z-40 lg:z-auto
-          flex-shrink-0 flex flex-col h-full lg:h-auto min-h-screen
-          bg-gradient-to-b from-[#16302a] via-[#1f4d3a] to-[#2d6a4f]
-          text-[#eff5f1] transition-all duration-300 ease-in-out
-          ${mobileMenuOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}
-          ${sidebarOpen ? "w-fit min-w-56" : "lg:w-16 w-56"}
-        `}
+    className={`
+      fixed lg:relative z-40 lg:z-auto
+      flex-shrink-0 flex flex-col h-full lg:h-auto min-h-screen
+      bg-gradient-to-b from-[#16302a] via-[#1f4d3a] to-[#2d6a4f]
+      text-[#eff5f1] transition-all duration-300 ease-in-out
+      ${mobileMenuOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}
+      ${sidebarOpen ? "w-fit min-w-56" : "lg:w-16 w-56"}
+      `}
       >
+        <AuthContext/>
         {/* logo */}
         <div className="flex items-center gap-2.5 px-4 py-5 border-b border-white/10">
           <div className="w-8 h-8 rounded-lg bg-white/10 border border-white/20 flex items-center justify-center flex-shrink-0">
