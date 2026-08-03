@@ -13,11 +13,15 @@ import {
   TrendingDown,
   Bell,
   Menu,
+  Plus,
 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { AdicionarTransaction } from "./transaction/novo/adicionarTransaction";
+import { AuthContext } from "@/context/AuthContext";
+import { UseAuth } from "@/hooks/Auth";
 
 // ── Mock data ──────────────────────────────────────────────
-const transactions = [{}];
+
 
 const categories = [
   { label: "Alimentação", spent: 520.4, budget: 800, color: "#f59e0b" },
@@ -36,6 +40,8 @@ const navItems = [
 ];
 
 export function Dashboard() {
+  const { user } = UseAuth()
+  const [open, setOpen] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [mobileMenuOpen, setMobileMenu] = useState(false);
   const [valor, setValor] = useState<Valores>({
@@ -72,6 +78,8 @@ export function Dashboard() {
     Informacoes();
   }, []);
 
+  console.log(user.name)
+
   return (
     <div className="min-h-screen bg-[#f3f1ea] flex font-[Inter,system-ui,sans-serif] text-[#1a1a18]">
       {mobileMenuOpen && (
@@ -93,11 +101,12 @@ export function Dashboard() {
               <Menu className="w-4 h-4 text-[#9a9a94]" />
             </button>
             <div>
+            
               <h1
                 className="text-lg sm:text-xl font-semibold text-[#1a1a18] tracking-tight"
                 style={{ fontFamily: "'Georgia', serif" }}
               >
-                Bem-vindo de volta, #TODO !
+                Bem-vindo de volta, {user.name.charAt(0).toUpperCase()} !
               </h1>
             </div>
           </div>
@@ -134,7 +143,10 @@ export function Dashboard() {
                   className="text-2xl sm:text-3xl font-semibold tracking-tight"
                   style={{ fontFamily: "'Georgia', serif" }}
                 >
-                  {valor.Total.toLocaleString('pt-BR',{ style: 'currency', currency: 'BRL' })}
+                  {valor.Total.toLocaleString("pt-BR", {
+                    style: "currency",
+                    currency: "BRL",
+                  })}
                 </p>
                 <p className="text-[11px] text-white/50 mt-1">
                   Atualizado agora
@@ -157,7 +169,10 @@ export function Dashboard() {
                   className="text-xl sm:text-2xl font-semibold text-[#1a1a18] tracking-tight"
                   style={{ fontFamily: "'Georgia', serif" }}
                 >
-                  {valor.Receita.toLocaleString('pt-BR',{ style: 'currency', currency: 'BRL' })}
+                  {valor.Receita.toLocaleString("pt-BR", {
+                    style: "currency",
+                    currency: "BRL",
+                  })}
                 </p>
                 <p className="text-[11px] text-[#9a9a94] mt-1">Este mês</p>
               </div>
@@ -178,7 +193,10 @@ export function Dashboard() {
                   className="text-xl sm:text-2xl font-semibold text-[#1a1a18] tracking-tight"
                   style={{ fontFamily: "'Georgia', serif" }}
                 >
-                  {valor.Despesas.toLocaleString('pt-BR',{ style: 'currency', currency: 'BRL' })}
+                  {valor.Despesas.toLocaleString("pt-BR", {
+                    style: "currency",
+                    currency: "BRL",
+                  })}
                 </p>
                 <p className="text-[11px] text-[#9a9a94] mt-1">Este mês</p>
               </div>
@@ -268,6 +286,20 @@ export function Dashboard() {
           </div>
         </div>
 
+        <div className="flex justify-end m-10">
+  <button
+  onClick={() => setOpen(true)}
+  className="group fixed bottom-18 right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-[#1f4d3a] to-[#2d6a4f] text-white shadow-lg transition-all duration-300 hover:w-36 hover:shadow-xl lg:hidden"
+>
+  <Plus className="h-5 w-5 shrink-0 transition-transform duration-300 group-hover:rotate-90" />
+
+  <span className="max-w-0 overflow-hidden whitespace-nowrap opacity-0 transition-all duration-300 group-hover:ml-2 group-hover:max-w-[80px] group-hover:opacity-100">
+    Adicionar
+  </span>
+</button>
+  <AdicionarTransaction open={open} setOpen={setOpen} />
+</div>
+
         {/* ── Bottom nav — mobile ─────────────────────── */}
         <nav className="lg:hidden flex items-center justify-around border-t border-[#e4e0d2] bg-white px-2 py-3 sticky bottom-0 z-20">
           {navItems.map(({ icon: Icon, label, active }) => (
@@ -282,6 +314,7 @@ export function Dashboard() {
             </button>
           ))}
         </nav>
+        
       </main>
     </div>
   );
