@@ -4,7 +4,7 @@ import { UseAuth } from "@/hooks/Auth";
 import { ArrowDownLeft, ArrowUpRight, ChevronsUpDown, LayoutDashboard, LineChart, LogOut, Settings, Wallet, X } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { AuthContext } from "@/contexts/authContext";
+
 
 export const NavBar = () =>{
   const [sidebarOpen, setSidebarOpen]   = useState(true);
@@ -35,7 +35,6 @@ export const NavBar = () =>{
       ${sidebarOpen ? "w-fit min-w-56" : "lg:w-16 w-56"}
       `}
       >
-        <AuthContext/>
         {/* logo */}
         <div className="flex items-center gap-2.5 px-4 py-5 border-b border-white/10">
           <div className="w-8 h-8 rounded-lg bg-white/10 border border-white/20 flex items-center justify-center flex-shrink-0">
