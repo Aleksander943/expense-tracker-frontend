@@ -13,19 +13,11 @@ import {
   TrendingDown,
   Bell,
   Menu,
+  Plus,
 } from "lucide-react";
 import { useEffect, useState } from "react";
-
-// ── Mock data ──────────────────────────────────────────────
-const transactions = [{}];
-
-const categories = [
-  { label: "Alimentação", spent: 520.4, budget: 800, color: "#f59e0b" },
-  { label: "Transporte", spent: 310.0, budget: 400, color: "#6366f1" },
-  { label: "Moradia", spent: 1450.0, budget: 1500, color: "#ec4899" },
-  { label: "Saúde", spent: 214.8, budget: 300, color: "#ef4444" },
-  { label: "Lazer", spent: 98.0, budget: 250, color: "#14b8a6" },
-];
+import { AdicionarTransaction } from "./transaction/novo/adicionarTransaction";
+import { UseAuth } from "@/hooks/Auth";
 
 const navItems = [
   { icon: LayoutDashboard, label: "Dashboard", active: true },
@@ -35,9 +27,19 @@ const navItems = [
   { icon: LineChart, label: "Relatórios", active: false },
 ];
 
+interface transacion{
+  value: number;
+  description: string;
+  type: string;
+  createdAt:string;
+}
+
 export function Dashboard() {
+  const { user } = UseAuth();
+  const [open, setOpen] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [mobileMenuOpen, setMobileMenu] = useState(false);
+  const [transaction, setTransacion] = useState<transacion[]>([]);
   const [valor, setValor] = useState<Valores>({
     Receita: 0,
     Despesas: 0,
@@ -65,6 +67,7 @@ export function Dashboard() {
           Despesas,
           Total,
         });
+        setTransacion(requisicao)
       } catch (error) {
         console.log(error);
       }
@@ -80,9 +83,7 @@ export function Dashboard() {
           onClick={() => setMobileMenu(false)}
         />
       )}
-      {/* ── Sidebar ──────────────────────────────────── */}
       <NavBar />
-      {/* ── Main ─────────────────────────────────────── */}
       <main className="flex-1 min-w-0 flex flex-col">
         <header className="flex items-center justify-between px-4 sm:px-8 py-4 bg-[#f3f1ea] border-b border-[#e4e0d2] sticky top-0 z-20">
           <div className="flex items-center gap-3">
@@ -97,7 +98,10 @@ export function Dashboard() {
                 className="text-lg sm:text-xl font-semibold text-[#1a1a18] tracking-tight"
                 style={{ fontFamily: "'Georgia', serif" }}
               >
-                Bem-vindo de volta, #TODO !
+                Bem-vindo de volta,{" "}
+                {user.name.charAt(0).toUpperCase() +
+                  user.name.slice(1).toLowerCase()}{" "}
+                !
               </h1>
             </div>
           </div>
@@ -107,7 +111,7 @@ export function Dashboard() {
               <Bell className="w-4 h-4 text-[#9a9a94]" />
               <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 bg-[#2d6a4f] rounded-full" />
             </button>
-            {/* recolher sidebar — desktop only */}
+
             <button
               className="hidden lg:block text-xs text-[#9a9a94] hover:text-[#1a1a18] transition-colors px-2 py-1 rounded-lg hover:bg-[#e4e0d2]"
               onClick={() => setSidebarOpen((p) => !p)}
@@ -134,7 +138,10 @@ export function Dashboard() {
                   className="text-2xl sm:text-3xl font-semibold tracking-tight"
                   style={{ fontFamily: "'Georgia', serif" }}
                 >
-                  {valor.Total.toLocaleString('pt-BR',{ style: 'currency', currency: 'BRL' })}
+                  {valor.Total.toLocaleString("pt-BR", {
+                    style: "currency",
+                    currency: "BRL",
+                  })}
                 </p>
                 <p className="text-[11px] text-white/50 mt-1">
                   Atualizado agora
@@ -157,7 +164,10 @@ export function Dashboard() {
                   className="text-xl sm:text-2xl font-semibold text-[#1a1a18] tracking-tight"
                   style={{ fontFamily: "'Georgia', serif" }}
                 >
-                  {valor.Receita.toLocaleString('pt-BR',{ style: 'currency', currency: 'BRL' })}
+                  {valor.Receita.toLocaleString("pt-BR", {
+                    style: "currency",
+                    currency: "BRL",
+                  })}
                 </p>
                 <p className="text-[11px] text-[#9a9a94] mt-1">Este mês</p>
               </div>
@@ -178,7 +188,10 @@ export function Dashboard() {
                   className="text-xl sm:text-2xl font-semibold text-[#1a1a18] tracking-tight"
                   style={{ fontFamily: "'Georgia', serif" }}
                 >
-                  {valor.Despesas.toLocaleString('pt-BR',{ style: 'currency', currency: 'BRL' })}
+                  {valor.Despesas.toLocaleString("pt-BR", {
+                    style: "currency",
+                    currency: "BRL",
+                  })}
                 </p>
                 <p className="text-[11px] text-[#9a9a94] mt-1">Este mês</p>
               </div>
@@ -200,8 +213,24 @@ export function Dashboard() {
                   Ver todas
                 </button>
               </div>
+                  {transaction.map((transactions) => (
+                    <div>
+                         <p className="px-5 sm:px-6 pt-3.5 pb-1.5 text-[11.5px] font-medium tracking-wide text-[#9a9a94] uppercase border-t border-[#f0ece0] first:border-t-0">
+      {transactions.description}
+    </p>
+    <div className="flex justify-between px-5 sm:px-6 pb-3.5">
 
-              <ul className="divide-y divide-[#f0ece0]"></ul>
+      <ul className="divide-y divide-[#f0ece0]">
+        <li className="text-[11.5px] text-[#9a9a94] capitalize">{transactions.type}</li>
+      </ul>
+
+      {transactions.type === "receita"
+        ? <p className="text-green-600 font-medium">+ R$ {transactions.value.toFixed(2)}</p>
+        : <p className="text-red-600 font-medium">- R$ {transactions.value.toFixed(2)}</p>
+      }
+    </div>
+  </div>
+                  ))}
             </div>
 
             {/* Categorias */}
@@ -217,55 +246,25 @@ export function Dashboard() {
                   <MoreHorizontal className="w-4 h-4 text-[#9a9a94]" />
                 </button>
               </div>
-
-              <ul className="px-5 sm:px-6 py-4 space-y-4">
-                {categories.map((cat) => {
-                  const pct = Math.min((cat.spent / cat.budget) * 100, 100);
-                  const over = cat.spent > cat.budget;
-                  return (
-                    <li key={cat.label}>
-                      <div className="flex items-center justify-between mb-1.5">
-                        <div className="flex items-center gap-2">
-                          <span
-                            className="w-2 h-2 rounded-full flex-shrink-0"
-                            style={{ background: cat.color }}
-                          />
-                          <span className="text-sm font-medium text-[#1a1a18]">
-                            {cat.label}
-                          </span>
-                        </div>
-                        <span
-                          className={`text-xs font-medium ${over ? "text-[#dc2626]" : "text-[#9a9a94]"}`}
-                        >
-                          {cat.spent}
-                          <span className="hidden sm:inline">
-                            {" "}
-                            / {cat.budget}
-                          </span>
-                        </span>
-                      </div>
-                      <div className="h-1.5 bg-[#f0ece0] rounded-full overflow-hidden">
-                        <div
-                          className="h-full rounded-full transition-all duration-700"
-                          style={{
-                            width: `${pct}%`,
-                            background: over ? "#dc2626" : cat.color,
-                          }}
-                        />
-                      </div>
-                    </li>
-                  );
-                })}
-              </ul>
-
-              <div className="mx-5 sm:mx-6 mb-5 mt-1 p-3 bg-[#f8f6f0] rounded-xl flex items-center justify-between">
-                <span className="text-xs text-[#9a9a94]">Total gasto</span>
-                <span className="text-sm font-semibold text-[#1a1a18]">
-                  {categories.reduce((a, c) => a + c.spent, 0)}
-                </span>
+              <div className="flex justify-center py-10">
+                <p>Em Desenvolvimento</p>
               </div>
             </div>
           </div>
+        </div>
+
+        <div className="flex justify-end m-10">
+          <button
+            onClick={() => setOpen(true)}
+            className="group fixed bottom-18 right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-[#1f4d3a] to-[#2d6a4f] text-white shadow-lg transition-all duration-300 hover:w-36 hover:shadow-xl"
+          >
+            <Plus className="h-5 w-5 shrink-0 transition-transform duration-300 group-hover:rotate-90" />
+
+            <span className="max-w-0 overflow-hidden whitespace-nowrap opacity-0 transition-all duration-300 group-hover:ml-2 group-hover:max-w-[80px] group-hover:opacity-100">
+              Adicionar
+            </span>
+          </button>
+          <AdicionarTransaction open={open} setOpen={setOpen} />
         </div>
 
         {/* ── Bottom nav — mobile ─────────────────────── */}
