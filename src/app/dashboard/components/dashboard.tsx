@@ -213,8 +213,8 @@ export function Dashboard() {
                   Ver todas
                 </button>
               </div>
-                  {transaction.map((transactions) => (
-                    <div>
+                  {transaction.map((transactions,index) => (
+                    <div key={index}>
                          <p className="px-5 sm:px-6 pt-3.5 pb-1.5 text-[11.5px] font-medium tracking-wide text-[#9a9a94] uppercase border-t border-[#f0ece0] first:border-t-0">
       {transactions.description}
     </p>
