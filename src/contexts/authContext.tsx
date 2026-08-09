@@ -1,5 +1,4 @@
 import api from "@/services/api";
-import Cookies from "js-cookie";
 import { createContext, useEffect, useState, type ReactNode } from "react";
 
 interface User {
@@ -8,7 +7,7 @@ interface User {
 }
 
 interface AuthContextData {
-  user: User
+  user: User;
 }
 
 interface AuthProviderProps {
@@ -17,32 +16,28 @@ interface AuthProviderProps {
 
 export const AuthContext = createContext({} as AuthContextData);
 
-export const AuthProvider = ({children}: AuthProviderProps) =>{
+export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [user, setUser] = useState({
-  name: "",
-  email: "",
-});
+    name: "",
+    email: "",
+  });
   useEffect(() => {
-    const usuario = async() => {
-      const token = Cookies.get('token');
-      if (!token) return;
+    const usuario = async () => {
       try {
-        const response = await api.get('/me', {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const response = await api.get("/me");
+
+        console.log("Resposta do /me:", response.data);
 
         setUser(response.data);
       } catch (error) {
-        console.error('Erro ao buscar dados do usuário:', error);
+        console.error("Erro ao buscar dados do usuário:", error);
       }
     };
 
     usuario();
   }, []);
-  
-  return(
+
+  return (
     <AuthContext.Provider value={{ user }}>{children}</AuthContext.Provider>
-  )
-}
+  );
+};
