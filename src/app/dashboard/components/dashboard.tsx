@@ -27,11 +27,11 @@ const navItems = [
   { icon: LineChart, label: "Relatórios", active: false },
 ];
 
-interface transacion{
+interface transacion {
   value: number;
   description: string;
   type: string;
-  createdAt:string;
+  createdAt: string;
 }
 
 export function Dashboard() {
@@ -67,7 +67,7 @@ export function Dashboard() {
           Despesas,
           Total,
         });
-        setTransacion(requisicao)
+        setTransacion(requisicao);
       } catch (error) {
         console.log(error);
       }
@@ -213,24 +213,44 @@ export function Dashboard() {
                   Ver todas
                 </button>
               </div>
-                  {transaction.map((transactions,index) => (
-                    <div key={index}>
-                         <p className="px-5 sm:px-6 pt-3.5 pb-1.5 text-[11.5px] font-medium tracking-wide text-[#9a9a94] uppercase border-t border-[#f0ece0] first:border-t-0">
-      {transactions.description}
-    </p>
-    <div className="flex justify-between px-5 sm:px-6 pb-3.5">
+              {transaction.map((transactions, index) => (
+                <div
+                  key={index}
+                  className="group flex items-center justify-between py-3 px-4 border-b border-gray-100 last:border-b-0 transition-colors hover:bg-gray-50/50"
+                >
+                  <div className="flex items-center gap-3">
+                    {/* Ícone sutil no lugar da barra vertical */}
+                    <div
+                      className={`flex h-9 w-9 items-center justify-center rounded-full text-xs font-semibold ${
+                        transactions.type === "receita"
+                          ? "bg-emerald-50 text-emerald-600"
+                          : "bg-rose-50 text-rose-600"
+                      }`}
+                    >
+                      {transactions.type === "receita" ? "↑" : "↓"}
+                    </div>
 
-      <ul className="divide-y divide-[#f0ece0]">
-        <li className="text-[11.5px] text-[#9a9a94] capitalize">{transactions.type}</li>
-      </ul>
+                    <div>
+                      <p className="text-sm font-medium text-gray-800 capitalize">
+                        {transactions.description}
+                      </p>
+                      <p className="text-xs text-gray-400 capitalize">
+                        {transactions.type}
+                      </p>
+                    </div>
+                  </div>
 
-      {transactions.type === "receita"
-        ? <p className="text-green-600 font-medium">+ R$ {transactions.value.toFixed(2)}</p>
-        : <p className="text-red-600 font-medium">- R$ {transactions.value.toFixed(2)}</p>
-      }
-    </div>
-  </div>
-                  ))}
+                  {transactions.type === "receita" ? (
+                    <span className="text-sm font-semibold text-emerald-600 tabular-nums">
+                      + R$ {transactions.value.toFixed(2)}
+                    </span>
+                  ) : (
+                    <span className="text-sm font-semibold text-rose-600 tabular-nums">
+                      - R$ {transactions.value.toFixed(2)}
+                    </span>
+                  )}
+                </div>
+              ))}
             </div>
 
             {/* Categorias */}

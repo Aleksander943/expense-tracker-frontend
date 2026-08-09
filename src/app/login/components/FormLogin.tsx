@@ -8,6 +8,7 @@ import { Estilizacao } from "./estilizacao";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import api from "@/services/api";
 import { useRouter } from "next/navigation";
+import Cookies from 'js-cookie';
 
 type Formulario = {
   email: string;
@@ -35,8 +36,7 @@ export function Login() {
       console.log("Resposta da API:", response.data);
 
       const { token } = response.data;
-      localStorage.setItem("token", token);
-
+      Cookies.set('token', token, {expires: 1 / 24, path: '/'})
       router.push("/dashboard");
     } catch (error) {
       setLoading(false)
