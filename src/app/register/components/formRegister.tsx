@@ -4,7 +4,7 @@ import { Mail, Lock, User, ChartLine } from "lucide-react";
 
 import { useState } from "react";
 import Link from "next/link";
-import { useForm, type SubmitHandler, type UseFormHandleSubmit } from "react-hook-form";
+import { useForm, type SubmitHandler } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { Estilizacao } from "./estilizacao";
 import api from "@/services/api";
@@ -30,7 +30,7 @@ export function FormRegister() {
       setError("")
 
       const response =  await api.post("/users", {
-        nome: data.nome,
+        name: data.nome,
         email: data.email,
         password: data.password,
       });
