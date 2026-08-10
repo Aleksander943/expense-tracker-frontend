@@ -15,7 +15,7 @@ import {
 import { useState } from "react";
 
 export const NavBar = () => {
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [sidebarOpen] = useState(true);
   const [mobileMenuOpen, setMobileMenu] = useState(false);
   const { user } = UseAuth();
 

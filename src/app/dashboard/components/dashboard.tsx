@@ -18,6 +18,7 @@ import {
 import { useEffect, useState } from "react";
 import { AdicionarTransaction } from "./transaction/novo/adicionarTransaction";
 import { UseAuth } from "@/hooks/Auth";
+import type { Valores } from "./type/valores";
 
 const navItems = [
   { icon: LayoutDashboard, label: "Dashboard", active: true },
@@ -27,7 +28,7 @@ const navItems = [
   { icon: LineChart, label: "Relatórios", active: false },
 ];
 
-interface transacion {
+interface Transacao {
   value: number;
   description: string;
   type: string;
@@ -39,7 +40,7 @@ export function Dashboard() {
   const [open, setOpen] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [mobileMenuOpen, setMobileMenu] = useState(false);
-  const [transaction, setTransacion] = useState<transacion[]>([]);
+  const [transaction, setTransacion] = useState<Transacao[]>([]);
   const [valor, setValor] = useState<Valores>({
     Receita: 0,
     Despesas: 0,
@@ -49,16 +50,16 @@ export function Dashboard() {
   useEffect(() => {
     const Informacoes = async () => {
       try {
-        const valores = await api.get("/transactions");
+        const valores = await api.get<Transacao[]>("/transactions");
         const requisicao = valores.data;
 
         const Receita = requisicao
-          .filter((item: any) => item.type === "receita")
-          .reduce((total: number, item: any) => total + item.value, 0);
+          .filter((item: Transacao) => item.type === "receita")
+          .reduce((total: number, item: Transacao) => total + item.value, 0);
 
         const Despesas = requisicao
-          .filter((item: any) => item.type === "despesa")
-          .reduce((total: number, item: any) => total + item.value, 0);
+          .filter((item: Transacao) => item.type === "despesa")
+          .reduce((total: number, item: Transacao) => total + item.value, 0);
 
         const Total = Receita - Despesas;
 

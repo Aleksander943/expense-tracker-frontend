@@ -1,3 +1,3 @@
-export const DespesasPage = () => {
-  return 
-};
+export default function DespesasPage() {
+  return <div>Despesas</div>;
+}

@@ -12,22 +12,17 @@ import {
 import { Field, FieldGroup } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { ArrowDownRight, ArrowUpRight, Plus } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
-import { Controller, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import api from "@/services/api";
 
 interface Props {
   open: boolean;
-  setOpen: (open: boolean) => void;
+  setOpen?: (open: boolean) => void;
+  onOpenChange?: (open: boolean) => void;
+  onCreated?: () => void | Promise<void>;
 }
 
 interface FormData{
@@ -37,16 +32,24 @@ interface FormData{
   data: string;
 }
 
-export function AdicionarTransaction({ open, setOpen }: Props) {
+export function AdicionarTransaction({ open, setOpen, onOpenChange, onCreated }: Props) {
   const [tipo, setTipo] = useState<"receita" | "despesa">("receita");
 
   const { register, handleSubmit, setValue } = useForm<FormData>({ defaultValues: { type: "receita", }, });
 
+  const closeDialog = (nextOpen: boolean) => {
+    setOpen?.(nextOpen);
+    onOpenChange?.(nextOpen);
+  };
+
   const onSubmit = async (data: FormData) => {
     try{
       await api.post("/transaction", data);
-      setOpen(false);
-      window.location.reload()
+      await onCreated?.();
+      closeDialog(false);
+      if (!onCreated) {
+        window.location.reload();
+      }
       console.log("Nova transação adicionada");
     }catch (err){
       console.log(`Tivemos um erro na hora de adicionar nova informação ${err}`)
@@ -54,7 +57,7 @@ export function AdicionarTransaction({ open, setOpen }: Props) {
   };
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog open={open} onOpenChange={closeDialog}>
       <DialogContent className="sm:max-w-xl rounded-lg border border-[#ebebeb] bg-white p-0 shadow-[0_8px_40px_rgba(0,0,0,0.10)]">
         <form onSubmit={handleSubmit(onSubmit)}>
           <DialogHeader className="border-b border-[#f5f5f3] px-6 pb-4 pt-5">
@@ -174,7 +177,7 @@ export function AdicionarTransaction({ open, setOpen }: Props) {
           <DialogFooter className="flex gap-2 border-t border-[#f5f5f3] px-6 pb-6 pt-4">
             <Button
               type="button"
-              onClick={() => setOpen(false)}
+              onClick={() => closeDialog(false)}
               className="flex-1 rounded-xl border border-[#ebebeb] bg-white text-[#9a9a94] hover:bg-[#f7f7f4]"
             >
               Cancelar
