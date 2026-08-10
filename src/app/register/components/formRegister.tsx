@@ -17,19 +17,19 @@ type FormData = {
 };
 
 export function FormRegister() {
-  const {register, handleSubmit} = useForm<FormData>();
+  const { register, handleSubmit } = useForm<FormData>();
 
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
-  const onSubmit: SubmitHandler<FormData> = async (data) => { 
+  const onSubmit: SubmitHandler<FormData> = async (data) => {
     try {
-      setLoading(true)
-      setError("")
+      setLoading(true);
+      setError("");
 
-      const response =  await api.post("/users", {
+      const response = await api.post("/users", {
         name: data.nome,
         email: data.email,
         password: data.password,
@@ -39,9 +39,9 @@ export function FormRegister() {
 
       router.push("/");
     } catch (error) {
-      setLoading(false)
+      setLoading(false);
       setError("");
-      console.log("Erro na API", error)
+      console.log("Erro na API", error);
     }
   };
 
@@ -78,9 +78,10 @@ export function FormRegister() {
             </div>
           )}
 
-          <form 
-          onSubmit={handleSubmit(onSubmit)}
-          className="flex flex-col gap-3">
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            className="flex flex-col gap-3"
+          >
             <div className="relative">
               <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[#c4c4bc]">
                 <User className="w-4 h-4" />
