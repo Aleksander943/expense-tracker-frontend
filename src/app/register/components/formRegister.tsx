@@ -10,7 +10,7 @@ import { Estilizacao } from "./estilizacao";
 import api from "@/services/api";
 
 type FormData = {
-  nome: string;
+  name: string;
   email: string;
   password: string;
   confirmPassword: string;
