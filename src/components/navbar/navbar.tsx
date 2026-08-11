@@ -1,7 +1,8 @@
 "use client";
 
 import { UseAuth } from "@/hooks/Auth";
-import Cookies from "js-cookie";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import {
   ArrowDownLeft,
   ArrowUpRight,
@@ -13,29 +14,35 @@ import {
   X,
 } from "lucide-react";
 import { useState } from "react";
+import path from "path";
 
 export const NavBar = () => {
   const [sidebarOpen] = useState(true);
   const [mobileMenuOpen, setMobileMenu] = useState(false);
+  const pathname = usePathname();
   const { user } = UseAuth();
 
   const navItems = [
-    { icon: LayoutDashboard, label: "Dashboard", active: true },
+    {
+      icon: LayoutDashboard,
+      label: "Dashboard",
+      active: true,
+      path: "dashboard",
+    },
     {
       icon: ArrowUpRight,
       label: "Receitas (Em desenvolvimento)",
-      active: false,
+      path: "/receita",
     },
     {
       icon: ArrowDownLeft,
       label: "Despesas (Em desenvolvimento)",
-      active: false,
+      path: "",
     },
-    { icon: Wallet, label: "Contas (Em desenvolvimento)", active: false },
     {
       icon: LineChart,
       label: "Relatórios (Em desenvolvimento)",
-      active: false,
+      path: "",
     },
   ];
 
@@ -75,32 +82,38 @@ export const NavBar = () => {
 
       {/* nav */}
       <nav className="flex flex-col gap-1 px-2 py-4 flex-1">
-        {navItems.map(({ icon: Icon, label, active }) => (
-          <button
-            key={label}
-            onClick={() => setMobileMenu(false)}
-            className={`
-                flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium
-                transition-colors text-left w-full
-                ${
-                  active
-                    ? "bg-white/15 text-white"
-                    : "text-white/60 hover:text-white hover:bg-white/10"
-                }
-              `}
-          >
-            <Icon className="w-4 h-4 flex-shrink-0" />
-            <span
-              className={`whitespace-nowrap transition-opacity duration-200 ${
-                sidebarOpen
-                  ? "opacity-100"
-                  : "lg:opacity-0 lg:w-0 lg:overflow-hidden"
-              }`}
+        {navItems.map(({ icon: Icon, label, path }) => {
+          const active = pathname === path;
+
+          return (
+            <Link
+              key={label}
+              href={path}
+              onClick={() => setMobileMenu(false)}
+              className={`
+          flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium
+          transition-colors text-left w-full
+          ${
+            active
+              ? "bg-white/15 text-white"
+              : "text-white/60 hover:text-white hover:bg-white/10"
+          }
+        `}
             >
-              {label}
-            </span>
-          </button>
-        ))}
+              <Icon className="w-4 h-4 flex-shrink-0" />
+
+              <span
+                className={`whitespace-nowrap transition-opacity duration-200 ${
+                  sidebarOpen
+                    ? "opacity-100"
+                    : "lg:opacity-0 lg:w-0 lg:overflow-hidden"
+                }`}
+              >
+                {label}
+              </span>
+            </Link>
+          );
+        })}
       </nav>
 
       {/* user */}
@@ -133,7 +146,7 @@ export const NavBar = () => {
 
           <button
             onClick={() => {
-              Cookies.remove("token");
+              localStorage.removeItem("token");
               window.location.reload();
             }}
             className="p-2 rounded-lg hover:bg-white/10 text-white/40 hover:text-white/80 transition-colors"
