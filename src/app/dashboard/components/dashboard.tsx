@@ -16,7 +16,7 @@ import {
   Plus,
 } from "lucide-react";
 import { useEffect, useState } from "react";
-import { AdicionarTransaction } from "./transaction/novo/adicionarTransaction";
+import { AdicionarTransaction } from "./Adicionar/adicionarTransaction";
 import { UseAuth } from "@/hooks/Auth";
 import type { Valores } from "./type/valores";
 
@@ -96,7 +96,7 @@ export function Dashboard() {
             </button>
             <div>
               <h1
-                className="text-lg sm:text-xl font-semibold text-[#1a1a18] tracking-tight"
+                className="text-lg sm:text-3xl font-semibold text-[#1a1a18] tracking-tight"
                 style={{ fontFamily: "'Georgia', serif" }}
               >
                 Bem-vindo de volta,{" "}
@@ -210,24 +210,21 @@ export function Dashboard() {
                 >
                   Transações recentes
                 </h2>
-                <button className="text-xs text-[#2d6a4f] font-medium hover:opacity-70 transition-opacity">
-                  Ver todas
-                </button>
               </div>
-              {transaction.map((transactions, index) => (
+
+              {transaction.slice(0, 9).map((transactions, index) => (
                 <div
                   key={index}
                   className="group flex items-center justify-between py-3 px-4 border-b border-gray-100 last:border-b-0 transition-colors hover:bg-gray-50/50"
                 >
                   <div className="flex items-center gap-3">
-                    {/* Ícone sutil no lugar da barra vertical */}
                     <div
                       className={`flex h-9 w-9 items-center justify-center rounded-full text-xs font-semibold ${
                         transactions.type === "receita"
-                          ? "bg-emerald-50 text-emerald-600"
-                          : "bg-rose-50 text-rose-600"
+                        ? "bg-emerald-50 text-emerald-600"
+                        : "bg-rose-50 text-rose-600"
                       }`}
-                    >
+                      >
                       {transactions.type === "receita" ? "↑" : "↓"}
                     </div>
 
