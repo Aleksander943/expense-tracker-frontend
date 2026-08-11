@@ -1,3 +1,5 @@
+import { Receita } from "./components/receita";
+
 export default function ReceitaPage() {
-  return 
+return <Receita/>;
 }
