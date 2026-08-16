@@ -30,7 +30,7 @@ export function FormRegister() {
       setError("");
 
       const response = await api.post("/users", {
-        name: data.nome,
+        name: data.name,
         email: data.email,
         password: data.password,
       });
