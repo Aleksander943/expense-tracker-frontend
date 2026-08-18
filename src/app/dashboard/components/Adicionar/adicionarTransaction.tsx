@@ -58,7 +58,8 @@ export function AdicionarTransaction({ open, setOpen, onOpenChange}: Props) {
     try{
       await api.post("/transaction", data);
       console.log("Nova transação adicionada");
-      closeDialog(false)
+      closeDialog(false);
+      window.location.reload();
     }catch (err){
       console.log(`Tivemos um erro na hora de adicionar nova informação ${err}`)
     }
