@@ -19,6 +19,7 @@ import { useEffect, useState } from "react";
 import { AdicionarTransaction } from "./Adicionar/adicionarTransaction";
 import { UseAuth } from "@/hooks/Auth";
 import type { Valores } from "./type/valores";
+import type { Transacao } from "@/app/type/type";
 
 const navItems = [
   { icon: LayoutDashboard, label: "Dashboard", active: true },
@@ -27,13 +28,6 @@ const navItems = [
   { icon: Wallet, label: "Contas", active: false },
   { icon: LineChart, label: "Relatórios", active: false },
 ];
-
-interface Transacao {
-  value: number;
-  description: string;
-  type: string;
-  createdAt: string;
-}
 
 export function Dashboard() {
   const { user } = UseAuth();
@@ -73,6 +67,7 @@ export function Dashboard() {
         console.log(error);
       }
     };
+
     Informacoes();
   }, []);
 
