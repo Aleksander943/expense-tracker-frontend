@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback, useMemo } from "react";
-import { AdicionarTransaction } from "./Adicionar/adicionarTransaction";
+import { AdicionarTransaction } from "../../adicionarTransacao/adicionarTransaction";
 import { Pencil, Trash } from "lucide-react";
 
 import deletarTransacao from "./Deletar/deletar";
