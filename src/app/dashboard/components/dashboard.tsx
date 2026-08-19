@@ -16,7 +16,7 @@ import {
   Plus,
 } from "lucide-react";
 import { useEffect, useState } from "react";
-import { AdicionarTransaction } from "./Adicionar/adicionarTransaction";
+import { AdicionarTransaction } from "../../adicionarTransacao/adicionarTransaction";
 import { UseAuth } from "@/hooks/Auth";
 import type { Valores } from "./type/valores";
 import type { Transacao } from "@/app/type/type";
@@ -194,56 +194,64 @@ export function Dashboard() {
             </div>
           </div>
 
-          {/* ── Transações + Categorias ── */}
-          <div className="grid grid-cols-1 xl:grid-cols-[1fr_320px] gap-4">
-            {/* Transações recentes */}
-            <div className="bg-white rounded-2xl border border-[#e4e0d2] overflow-hidden">
-              <div className="flex items-center justify-between px-5 sm:px-6 py-4 border-b border-[#f0ece0]">
+          <div className="grid grid-cols-1 gap-4 lg:grid-cols-[minmax(0,1fr)_320px] items-start">
+            <div className="overflow-hidden rounded-2xl border border-[#e4e0d2] bg-white shadow-sm">
+              <div className="flex items-center justify-between border-b border-[#f0ece0] px-5 py-4 sm:px-6">
                 <h2
                   className="text-sm font-semibold text-[#1a1a18]"
                   style={{ fontFamily: "'Georgia', serif" }}
                 >
                   Transações recentes
                 </h2>
+                <button className="rounded-lg p-1 transition-colors hover:bg-[#f0ece0]">
+                  <MoreHorizontal className="h-4 w-4 text-[#9a9a94]" />
+                </button>
               </div>
-
-              {transaction.slice(0, 9).map((transactions, index) => (
-                <div
-                  key={index}
-                  className="group flex items-center justify-between py-3 px-4 border-b border-gray-100 last:border-b-0 transition-colors hover:bg-gray-50/50"
-                >
-                  <div className="flex items-center gap-3">
+              <div className="divide-y divide-gray-100">
+                {transaction.length !== 0 ? (
+                  transaction.slice(0, 9).map((transactions, index) => (
                     <div
-                      className={`flex h-9 w-9 items-center justify-center rounded-full text-xs font-semibold ${
-                        transactions.type === "receita"
-                        ? "bg-emerald-50 text-emerald-600"
-                        : "bg-rose-50 text-rose-600"
-                      }`}
-                      >
-                      {transactions.type === "receita" ? "↑" : "↓"}
-                    </div>
+                      key={index}
+                      className="group flex items-center justify-between py-3 px-4 border-b border-gray-100 last:border-b-0 transition-colors hover:bg-gray-50/50"
+                    >
+                      <div className="flex items-center gap-3">
+                        <div
+                          className={`flex h-9 w-9 items-center justify-center rounded-full text-xs font-semibold ${
+                            transactions.type === "receita"
+                              ? "bg-emerald-50 text-emerald-600"
+                              : "bg-rose-50 text-rose-600"
+                          }`}
+                        >
+                          {transactions.type === "receita" ? "↑" : "↓"}
+                        </div>
 
-                    <div>
-                      <p className="text-sm font-medium text-gray-800 capitalize">
-                        {transactions.description}
-                      </p>
-                      <p className="text-xs text-gray-400 capitalize">
-                        {transactions.type}
-                      </p>
+                        <div>
+                          <p className="text-sm font-medium text-gray-800 capitalize">
+                            {transactions.description}
+                          </p>
+                          <p className="text-xs text-gray-400 capitalize">
+                            {transactions.type}
+                          </p>
+                        </div>
+                      </div>
+
+                      {transactions.type === "receita" ? (
+                        <span className="text-sm font-semibold text-emerald-600 tabular-nums">
+                          + R$ {transactions.value.toFixed(2)}
+                        </span>
+                      ) : (
+                        <span className="text-sm font-semibold text-rose-600 tabular-nums">
+                          - R$ {transactions.value.toFixed(2)}
+                        </span>
+                      )}
                     </div>
+                  ))
+                ) : (
+                  <div className="text-center px-4 py-5 ">
+                    <p>Nenhuma transação cadastrada</p>
                   </div>
-
-                  {transactions.type === "receita" ? (
-                    <span className="text-sm font-semibold text-emerald-600 tabular-nums">
-                      + R$ {transactions.value.toFixed(2)}
-                    </span>
-                  ) : (
-                    <span className="text-sm font-semibold text-rose-600 tabular-nums">
-                      - R$ {transactions.value.toFixed(2)}
-                    </span>
-                  )}
-                </div>
-              ))}
+                )}
+              </div>
             </div>
 
             {/* Categorias */}
