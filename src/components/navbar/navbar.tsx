@@ -31,13 +31,13 @@ export const NavBar = () => {
     },
     {
       icon: ArrowUpRight,
-      label: "Receitas (Em desenvolvimento)",
+      label: "Receitas",
       path: "/receita",
     },
     {
       icon: ArrowDownLeft,
-      label: "Despesas (Em desenvolvimento)",
-      path: "",
+      label: "Despesas",
+      path: "/despesas",
     },
     {
       icon: LineChart,
