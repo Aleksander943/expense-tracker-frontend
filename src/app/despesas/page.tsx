@@ -1,3 +1,5 @@
+import { Despesas } from "./components/despesas";
+
 export default function DespesasPage() {
-  return <div>Despesas</div>;
+  return <Despesas/>;
 }
