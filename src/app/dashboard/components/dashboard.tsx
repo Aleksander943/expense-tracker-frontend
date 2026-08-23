@@ -95,8 +95,10 @@ export function Dashboard() {
                 style={{ fontFamily: "'Georgia', serif" }}
               >
                 Bem-vindo de volta,{" "}
-                {user.name.charAt(0).toUpperCase() +
-                  user.name.slice(1).toLowerCase()}{" "}
+                {user?.name
+                  ? user.name.charAt(0).toUpperCase() +
+                    user.name.slice(1).toLowerCase()
+                  : ""}{" "}
                 !
               </h1>
             </div>
