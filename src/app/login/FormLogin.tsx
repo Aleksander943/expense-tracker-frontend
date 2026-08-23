@@ -8,6 +8,8 @@ import { Estilizacao } from "./estilizacao";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import api from "@/services/api";
 import { useRouter } from "next/navigation";
+import Cookies from "js-cookie";
+import { UseAuth } from "@/hooks/Auth";
 
 type Formulario = {
   email: string;
@@ -21,6 +23,7 @@ export function Login() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const { login } = UseAuth();
 
   const onSubmit: SubmitHandler<Formulario> = async (data) => {
     try {
@@ -35,7 +38,9 @@ export function Login() {
       console.log("Resposta da API:", response.data);
 
       const { token } = response.data;
-      localStorage.setItem("token", token);
+      await login(token);
+
+      Cookies.set("token", token, { path: "/", expires: 7 });
       router.push("/dashboard");
     } catch (error) {
       setLoading(false);
