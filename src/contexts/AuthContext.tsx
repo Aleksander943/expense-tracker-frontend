@@ -1,4 +1,5 @@
 import api from "@/services/api";
+import Cookies from "js-cookie";
 import { createContext, useEffect, useState, type ReactNode } from "react";
 
 interface User {
@@ -7,37 +8,59 @@ interface User {
 }
 
 interface AuthContextData {
-  user: User;
-}
-
-interface AuthProviderProps {
-  children: ReactNode;
+  user: User | null;
+  loading: boolean;
+  login: (token: string) => Promise<void>;
 }
 
 export const AuthContext = createContext({} as AuthContextData);
 
-export const AuthProvider = ({ children }: AuthProviderProps) => {
-  const [user, setUser] = useState({
-    name: "",
-    email: "",
-  });
+export const AuthProvider = ({ children }: { children: ReactNode }) => {
+  const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true); 
+
   useEffect(() => {
-    const usuario = async () => {
-      try {
-        const response = await api.get("/me");
+    const loadStorageData = async () => {
+      const token = Cookies.get("token");
 
-        console.log("Resposta do /me:", response.data);
-
-        setUser(response.data);
-      } catch (error) {
-        console.error("Erro ao buscar dados do usuário:", error);
+      if (token) {
+        api.defaults.headers.common.Authorization = `Bearer ${token}`;
+        try {
+          const response = await api.get("/me");
+          setUser(response.data);
+        } catch (error) {
+          console.error("Token inválido ou expirado:", error);
+          Cookies.remove("token");
+          delete api.defaults.headers.common.Authorization;
+        }
       }
+
+      setLoading(false); 
     };
 
-    usuario();
+    loadStorageData();
   }, []);
 
+  const login = async (token: string) => {
+    Cookies.set("token", token, { path: "/", expires: 7 });
+    api.defaults.headers.common.Authorization = `Bearer ${token}`;
+    const response = await api.get("/me");
+    setUser(response.data);
+  };
+
+
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-[#f3f1ea]">
+        <p className="text-sm text-[#9a9a94]">Carregando...</p>
+      </div>
+    );
+  }
+
   return (
-    <AuthContext.Provider value={{ user }}>{children}</AuthContext.Provider>
+    <AuthContext.Provider value={{ user, loading, login }}>
+      {children}
+    </AuthContext.Provider>
   );
 };
