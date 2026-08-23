@@ -11,7 +11,7 @@ export const schema = z.object({
     .number()
     .positive({ message: "O valor deve ser maior que zero" }),
 
-  data: z
+  createdAt: z
     .string()
     .min(1, { message: "A data é obrigatória" }),
 });

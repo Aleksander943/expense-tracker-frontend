@@ -45,7 +45,7 @@ export function AdicionarTransaction({ open, setOpen, onOpenChange}: Props) {
     type: "receita",
     description: "",
     value: 0,
-    data: "",
+    createdAt: "",
   },
 });
 
@@ -176,7 +176,7 @@ export function AdicionarTransaction({ open, setOpen, onOpenChange}: Props) {
 
               <Input
                 id="date"
-                {...register("data")}
+                {...register("createdAt")}
                 type="date"
                 className="w-full rounded-xl border border-[#ebebeb] px-4 py-3 text-[14px]"
               />
