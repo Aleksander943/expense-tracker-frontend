@@ -1,5 +1,7 @@
+import { Relatorio } from "./components/relatorio";
+
 export default function RelatorioPage() {
 return (
-  <p>Eu</p>
+  <Relatorio />
 );
 }
