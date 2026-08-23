@@ -42,7 +42,7 @@ export const NavBar = () => {
     {
       icon: LineChart,
       label: "Relatórios (Em desenvolvimento)",
-      path: "",
+      path: "/relatorio",
     },
   ];
 
