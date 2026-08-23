@@ -209,7 +209,7 @@ export function Dashboard() {
               </div>
               <div className="divide-y divide-gray-100">
                 {transaction.length !== 0 ? (
-                  transaction.slice(0, 9).map((transactions, index) => (
+                  transaction.slice(0, 6).map((transactions, index) => (
                     <div
                       key={index}
                       className="group flex items-center justify-between py-3 px-4 border-b border-gray-100 last:border-b-0 transition-colors hover:bg-gray-50/50"
