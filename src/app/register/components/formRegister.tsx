@@ -88,7 +88,7 @@ export function FormRegister() {
               </span>
               <input
                 type="text"
-                {...register("nome")}
+                {...register("name")}
                 placeholder="Nome completo"
                 className="bg-white w-full pl-9 pr-3 py-3 border border-[#ebebeb] rounded-xl text-sm text-[#1a1a18] placeholder-[#c4c4bc] outline-none transition-all focus:border-[#2d6a4f] focus:ring-2 focus:ring-[#2d6a4f]/10"
               />
