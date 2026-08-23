@@ -13,6 +13,8 @@ export const Receita = () => {
   const [busca, setBusca] = useState<string>("");
 
   const [receita, setReceita] = useState<Transacao[]>();
+
+  useEffect(() => {
   const receitaTotal = async () => {
     try {
       const resultado = await api.get("/transactions");
@@ -24,7 +26,7 @@ export const Receita = () => {
     }
   };
 
-  useEffect(() => {
+  
     receitaTotal();
   }, []);
 
@@ -34,7 +36,7 @@ export const Receita = () => {
 
   return (
     <div className="min-h-screen bg-[#f3f1ea] flex font-[Inter,system-ui,sans-serif] text-[#1a1a18]">
-      {false && <div className="fixed inset-0 bg-black/40 z-30 lg:hidden" />}
+      <div className="fixed inset-0 bg-black/40 z-30 lg:hidden" />
       <NavBar />
       <main className="flex-1 min-w-0 flex flex-col">
         <header className="flex items-center justify-between px-4 sm:px-8 py-4 bg-[#f3f1ea] border-b border-[#e4e0d2] sticky top-0 z-20">

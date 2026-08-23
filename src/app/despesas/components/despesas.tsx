@@ -4,7 +4,7 @@ import type { Transacao } from "@/app/type/type";
 import { Filtro } from "@/components/filtro/filtro";
 import { NavBar } from "@/components/navbar/navbar";
 import api from "@/services/api";
-import { Bell, Menu, MoreHorizontal, Plus, TrendingUp } from "lucide-react";
+import { Bell, Menu, MoreHorizontal, Plus } from "lucide-react";
 import { useEffect, useState } from "react";
 
 export const Despesas = () => {
@@ -13,6 +13,8 @@ export const Despesas = () => {
   const [periodo, setPeriodo] = useState<"mes" | "3meses" | "ano">("mes");
   const [categoria, setCategoria] = useState<string>("Todas as categorias");
   const [busca, setBusca] = useState<string>("");
+
+  useEffect(() => {
 
   const infoDespesas = async () => {
     try {
@@ -25,8 +27,8 @@ export const Despesas = () => {
     }
   };
 
-  useEffect(() => {
-    infoDespesas();
+  
+   infoDespesas();
   },[])
 
   const filtroBusca = receita?.filter(({ description }) =>
@@ -35,7 +37,7 @@ export const Despesas = () => {
 
   return (
     <div className="min-h-screen bg-[#f3f1ea] flex font-[Inter,system-ui,sans-serif] text-[#1a1a18]">
-      {false && <div className="fixed inset-0 bg-black/40 z-30 lg:hidden" />}
+      <div className="fixed inset-0 bg-black/40 z-30 lg:hidden" />
       <NavBar />
       <main className="flex-1 min-w-0 flex flex-col">
         <header className="flex items-center justify-between px-4 sm:px-8 py-4 bg-[#f3f1ea] border-b border-[#e4e0d2] sticky top-0 z-20">

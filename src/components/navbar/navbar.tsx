@@ -10,11 +10,9 @@ import {
   LineChart,
   LogOut,
   Settings,
-  Wallet,
   X,
 } from "lucide-react";
 import { useState } from "react";
-import path from "path";
 
 export const NavBar = () => {
   const [sidebarOpen] = useState(true);

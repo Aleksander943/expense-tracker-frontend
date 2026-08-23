@@ -1,51 +1,89 @@
 "use client";
 
 import { NavBar } from "@/components/navbar/navbar";
-import { Bell, Menu, MoreHorizontal, Plus, TrendingUp } from "lucide-react";
+import { Bell, Menu, MoreHorizontal, Plus } from "lucide-react";
 import { Grafico } from "./graficoEstatistica";
 import api from "@/services/api";
 import { useEffect, useState } from "react";
 import type { Transacao } from "@/app/type/type";
+import { Mes } from "../../type/data";
 
 type transacaoType = {
   Receita: number;
   Despesas: number;
-}
+};
+
+export type dadosMesType = {
+  id: number;
+  abreviacao: string;
+  Receita: number;
+  Despesas: number;
+};
 
 export const Relatorio = () => {
   const [total, setTotal] = useState<transacaoType>();
+  const [dadosPorMes, setDadosPorMes] = useState<dadosMesType[]>([]);
 
+  useEffect(() => {
   const informacao = async () => {
     try {
       const valores = await api.get<Transacao[]>("/transactions");
+
       const requisicao = valores.data;
 
+      const agora = new Date().getMonth() + 1;
+
+      const meses = Mes.filter(({ id }) => id <= agora).slice(-6);
+
       const Receita = requisicao
-        .filter((item: Transacao) => item.type === "receita")
-        .reduce((total: number, item: Transacao) => total + item.value, 0);
+        .filter((item) => item.type === "receita")
+        .reduce((total, item) => total + item.value, 0);
 
       const Despesas = requisicao
-        .filter((item: Transacao) => item.type === "despesa")
-        .reduce((total: number, item: Transacao) => total + item.value, 0);
+        .filter((item) => item.type === "despesa")
+        .reduce((total, item) => total + item.value, 0);
 
-      const Total = Receita - Despesas;
+      const dadosPorMes = meses.map((mes) => {
+        const transacoesDoMes = requisicao.filter((item) => {
+          const data = new Date(item.createdAt);
+
+          return data.getMonth() + 1 === mes.id;
+        });
+
+        const Receita = transacoesDoMes
+          .filter((item) => item.type === "receita")
+          .reduce((total, item) => total + item.value, 0);
+
+        const Despesas = transacoesDoMes
+          .filter((item) => item.type === "despesa")
+          .reduce((total, item) => total + item.value, 0);
+
+        return {
+          id: mes.id,
+          abreviacao: mes.abreviacao,
+          Receita,
+          Despesas,
+        };
+      });
 
       setTotal({
         Receita,
-        Despesas
-    })
+        Despesas,
+      });
+
+      setDadosPorMes(dadosPorMes);
     } catch (error) {
       console.log(error);
     }
   };
 
-  useEffect(() => {
+  
     informacao();
   }, []);
 
   return (
     <div className="min-h-screen bg-[#f3f1ea] flex font-[Inter,system-ui,sans-serif] text-[#1a1a18]">
-      {false && <div className="fixed inset-0 bg-black/40 z-30 lg:hidden" />}
+     <div className="fixed inset-0 bg-black/40 z-30 lg:hidden" />
       <NavBar />
       <main className="flex-1 min-w-0 flex flex-col">
         <header className="flex items-center justify-between px-4 sm:px-8 py-4 bg-[#f3f1ea] border-b border-[#e4e0d2] sticky top-0 z-20">
@@ -75,7 +113,7 @@ export const Relatorio = () => {
         </header>
 
         <div className="flex-1 overflow-y-auto px-4 sm:px-8 py-6 space-y-5">
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="bg-white rounded-2xl p-5 flex flex-col justify-between min-h-[110px] border border-[#e4e0d2]">
               <div className="flex items-center justify-between">
                 <span className="text-xs text-[#9a9a94] uppercase tracking-widest">
@@ -87,8 +125,7 @@ export const Relatorio = () => {
                   className="text-xl sm:text-2xl font-semibold text-[#1a1a18] tracking-tight"
                   style={{ fontFamily: "'Georgia', serif" }}
                 >
-                   {total?.Receita
-                  .toLocaleString("pt-BR", {
+                  {total?.Receita.toLocaleString("pt-BR", {
                     style: "currency",
                     currency: "BRL",
                   })}
@@ -109,34 +146,13 @@ export const Relatorio = () => {
                   className="text-xl sm:text-2xl font-semibold text-[#1a1a18] tracking-tight"
                   style={{ fontFamily: "'Georgia', serif" }}
                 >
-                 { total?.Despesas
-
-                      .toLocaleString("pt-BR", {
-                        style: "currency",
-                        currency: "BRL",
-                      })
-                    }
+                  {total?.Despesas.toLocaleString("pt-BR", {
+                    style: "currency",
+                    currency: "BRL",
+                  })}
                 </p>
                 <p className="text-[11px] text-[#9a9a94] mt-1">
                   Últimos 6 meses
-                </p>
-              </div>
-            </div>
-
-            {/* Despesas */}
-            <div className="bg-white rounded-2xl p-5 flex flex-col justify-between min-h-[110px] border border-[#e4e0d2]">
-              <div className="flex items-center justify-between">
-                <span className="text-xs text-[#9a9a94] uppercase tracking-widest">
-                  Saldo acumulado
-                </span>
-              </div>
-              <div>
-                <p
-                  className="text-xl sm:text-2xl font-semibold text-[#1a1a18] tracking-tight"
-                  style={{ fontFamily: "'Georgia', serif" }}
-                ></p>
-                <p className="text-[11px] text-[#9a9a94] mt-1">
-                  Economia no período
                 </p>
               </div>
             </div>
@@ -156,7 +172,7 @@ export const Relatorio = () => {
                   </div>
                 </div>
               </div>
-              <Grafico />
+              <Grafico dadosPorMes={dadosPorMes} />
             </div>
 
             <div className="overflow-hidden rounded-2xl border border-[#e4e0d2] bg-white shadow-sm">
