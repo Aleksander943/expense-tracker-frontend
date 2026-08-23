@@ -13,6 +13,7 @@ import {
   X,
 } from "lucide-react";
 import { useState } from "react";
+import Cookies from "js-cookie";
 
 export const NavBar = () => {
   const [sidebarOpen] = useState(true);
@@ -39,7 +40,7 @@ export const NavBar = () => {
     },
     {
       icon: LineChart,
-      label: "Relatórios (Em desenvolvimento)",
+      label: "Relatórios",
       path: "/relatorio",
     },
   ];
@@ -144,7 +145,7 @@ export const NavBar = () => {
 
           <button
             onClick={() => {
-              localStorage.removeItem("token");
+              Cookies.remove("token");
               window.location.reload();
             }}
             className="p-2 rounded-lg hover:bg-white/10 text-white/40 hover:text-white/80 transition-colors"
