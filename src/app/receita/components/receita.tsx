@@ -1,5 +1,6 @@
 "use client";
 
+import { AdicionarTransaction } from "@/app/adicionarTransacao/adicionarTransaction";
 import type { Transacao } from "@/app/type/type";
 import { Filtro } from "@/components/filtro/filtro";
 import { NavBar } from "@/components/navbar/navbar";
@@ -9,24 +10,26 @@ import { useEffect, useState } from "react";
 
 export const Receita = () => {
   const [periodo, setPeriodo] = useState<"mes" | "3meses" | "ano">("mes");
+  const [open, setOpen] = useState(false);
   const [categoria, setCategoria] = useState<string>("Todas as categorias");
   const [busca, setBusca] = useState<string>("");
 
   const [receita, setReceita] = useState<Transacao[]>();
 
   useEffect(() => {
-  const receitaTotal = async () => {
-    try {
-      const resultado = await api.get("/transactions");
-      const data = resultado.data;
-      const filtrar = data.filter((item: Transacao) => item.type === "receita");
-      setReceita(filtrar);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+    const receitaTotal = async () => {
+      try {
+        const resultado = await api.get("/transactions");
+        const data = resultado.data;
+        const filtrar = data.filter(
+          (item: Transacao) => item.type === "receita",
+        );
+        setReceita(filtrar);
+      } catch (error) {
+        console.log(error);
+      }
+    };
 
-  
     receitaTotal();
   }, []);
 
@@ -238,13 +241,17 @@ export const Receita = () => {
           </div>
 
           <div className="flex justify-end m-10">
-            <button className="group fixed bottom-18 right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-[#1f4d3a] to-[#2d6a4f] text-white shadow-lg transition-all duration-300 hover:w-36 hover:shadow-xl">
+            <button
+              onClick={() => setOpen(true)}
+              className="group fixed bottom-18 right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-[#1f4d3a] to-[#2d6a4f] text-white shadow-lg transition-all duration-300 hover:w-36 hover:shadow-xl"
+            >
               <Plus className="h-5 w-5 shrink-0 transition-transform duration-300 group-hover:rotate-90" />
 
               <span className="max-w-0 overflow-hidden whitespace-nowrap opacity-0 transition-all duration-300 group-hover:ml-2 group-hover:max-w-[80px] group-hover:opacity-100">
                 Adicionar
               </span>
             </button>
+            <AdicionarTransaction open={open} setOpen={setOpen} />
           </div>
         </div>
       </main>

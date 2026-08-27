@@ -1,5 +1,6 @@
-'use client'
+"use client";
 
+import { AdicionarTransaction } from "@/app/adicionarTransacao/adicionarTransaction";
 import type { Transacao } from "@/app/type/type";
 import { Filtro } from "@/components/filtro/filtro";
 import { NavBar } from "@/components/navbar/navbar";
@@ -9,27 +10,27 @@ import { useEffect, useState } from "react";
 
 export const Despesas = () => {
   const [receita, setReceita] = useState<Transacao[]>();
-
+  const [open, setOpen] = useState(false);
   const [periodo, setPeriodo] = useState<"mes" | "3meses" | "ano">("mes");
   const [categoria, setCategoria] = useState<string>("Todas as categorias");
   const [busca, setBusca] = useState<string>("");
 
   useEffect(() => {
+    const infoDespesas = async () => {
+      try {
+        const response = await api.get("/transactions");
+        const data = response?.data;
+        const filter = data.filter(
+          (item: Transacao) => item.type === "despesa",
+        );
+        setReceita(filter);
+      } catch (err) {
+        console.log(err);
+      }
+    };
 
-  const infoDespesas = async () => {
-    try {
-      const response = await api.get("/transactions");
-      const data = response?.data;
-      const filter = data.filter((item: Transacao) => item.type === "despesa");
-      setReceita(filter);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  
-   infoDespesas();
-  },[])
+    infoDespesas();
+  }, []);
 
   const filtroBusca = receita?.filter(({ description }) =>
     description?.toLowerCase().includes(busca?.toLowerCase()),
@@ -79,12 +80,12 @@ export const Despesas = () => {
                   className="text-2xl sm:text-3xl font-semibold tracking-tight"
                   style={{ fontFamily: "'Georgia', serif" }}
                 >
-                   {(receita ?? [])
+                  {(receita ?? [])
                     .reduce((total, item) => total + item.value, 0)
                     .toLocaleString("pt-BR", {
                       style: "currency",
                       currency: "BRL",
-                    })} 
+                    })}
                 </p>
                 <p className="text-[11px] text-white/50 mt-1">
                   Atualizado agora
@@ -103,14 +104,14 @@ export const Despesas = () => {
                   className="text-xl sm:text-2xl font-semibold text-[#1a1a18] tracking-tight"
                   style={{ fontFamily: "'Georgia', serif" }}
                 >
-                 {(receita?.length
+                  {(receita?.length
                     ? receita.reduce((acc, cur) => acc + cur.value, 0) /
                       receita.length
                     : 0
                   ).toLocaleString("pt-BR", {
                     style: "currency",
                     currency: "BRL",
-                  })} 
+                  })}
                 </p>
                 <p className="text-[11px] text-[#9a9a94] mt-1">Este mês</p>
               </div>
@@ -133,7 +134,7 @@ export const Despesas = () => {
                         style: "currency",
                         currency: "BRL",
                       })
-                    : 0} 
+                    : 0}
                 </p>
                 <p className="text-[11px] text-[#9a9a94] mt-1">Este mês</p>
               </div>
@@ -235,13 +236,17 @@ export const Despesas = () => {
           </div>
 
           <div className="flex justify-end m-10">
-            <button className="group fixed bottom-18 right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-[#1f4d3a] to-[#2d6a4f] text-white shadow-lg transition-all duration-300 hover:w-36 hover:shadow-xl">
+            <button
+              onClick={() => setOpen(true)}
+              className="group fixed bottom-18 right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-[#1f4d3a] to-[#2d6a4f] text-white shadow-lg transition-all duration-300 hover:w-36 hover:shadow-xl"
+            >
               <Plus className="h-5 w-5 shrink-0 transition-transform duration-300 group-hover:rotate-90" />
 
               <span className="max-w-0 overflow-hidden whitespace-nowrap opacity-0 transition-all duration-300 group-hover:ml-2 group-hover:max-w-[80px] group-hover:opacity-100">
                 Adicionar
               </span>
             </button>
+            <AdicionarTransaction open={open} setOpen={setOpen} />
           </div>
         </div>
       </main>

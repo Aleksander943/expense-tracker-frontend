@@ -7,6 +7,7 @@ import api from "@/services/api";
 import { useEffect, useState } from "react";
 import type { Transacao } from "@/app/type/type";
 import { Mes } from "../../type/data";
+import { AdicionarTransaction } from "@/app/adicionarTransacao/adicionarTransaction";
 
 type transacaoType = {
   Receita: number;
@@ -22,68 +23,68 @@ export type dadosMesType = {
 
 export const Relatorio = () => {
   const [total, setTotal] = useState<transacaoType>();
+  const [open, setOpen] = useState(false);
   const [dadosPorMes, setDadosPorMes] = useState<dadosMesType[]>([]);
 
   useEffect(() => {
-  const informacao = async () => {
-    try {
-      const valores = await api.get<Transacao[]>("/transactions");
+    const informacao = async () => {
+      try {
+        const valores = await api.get<Transacao[]>("/transactions");
 
-      const requisicao = valores.data;
+        const requisicao = valores.data;
 
-      const agora = new Date().getMonth() + 1;
+        const agora = new Date().getMonth() + 1;
 
-      const meses = Mes.filter(({ id }) => id <= agora).slice(-6);
+        const meses = Mes.filter(({ id }) => id <= agora).slice(-6);
 
-      const Receita = requisicao
-        .filter((item) => item.type === "receita")
-        .reduce((total, item) => total + item.value, 0);
-
-      const Despesas = requisicao
-        .filter((item) => item.type === "despesa")
-        .reduce((total, item) => total + item.value, 0);
-
-      const dadosPorMes = meses.map((mes) => {
-        const transacoesDoMes = requisicao.filter((item) => {
-          const data = new Date(item.createdAt);
-
-          return data.getMonth() + 1 === mes.id;
-        });
-
-        const Receita = transacoesDoMes
+        const Receita = requisicao
           .filter((item) => item.type === "receita")
           .reduce((total, item) => total + item.value, 0);
 
-        const Despesas = transacoesDoMes
+        const Despesas = requisicao
           .filter((item) => item.type === "despesa")
           .reduce((total, item) => total + item.value, 0);
 
-        return {
-          id: mes.id,
-          abreviacao: mes.abreviacao,
+        const dadosPorMes = meses.map((mes) => {
+          const transacoesDoMes = requisicao.filter((item) => {
+            const data = new Date(item.createdAt);
+
+            return data.getMonth() + 1 === mes.id;
+          });
+
+          const Receita = transacoesDoMes
+            .filter((item) => item.type === "receita")
+            .reduce((total, item) => total + item.value, 0);
+
+          const Despesas = transacoesDoMes
+            .filter((item) => item.type === "despesa")
+            .reduce((total, item) => total + item.value, 0);
+
+          return {
+            id: mes.id,
+            abreviacao: mes.abreviacao,
+            Receita,
+            Despesas,
+          };
+        });
+
+        setTotal({
           Receita,
           Despesas,
-        };
-      });
+        });
 
-      setTotal({
-        Receita,
-        Despesas,
-      });
+        setDadosPorMes(dadosPorMes);
+      } catch (error) {
+        console.log(error);
+      }
+    };
 
-      setDadosPorMes(dadosPorMes);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  
     informacao();
   }, []);
 
   return (
     <div className="min-h-screen bg-[#f3f1ea] flex font-[Inter,system-ui,sans-serif] text-[#1a1a18]">
-     <div className="fixed inset-0 bg-black/40 z-30 lg:hidden" />
+      <div className="fixed inset-0 bg-black/40 z-30 lg:hidden" />
       <NavBar />
       <main className="flex-1 min-w-0 flex flex-col">
         <header className="flex items-center justify-between px-4 sm:px-8 py-4 bg-[#f3f1ea] border-b border-[#e4e0d2] sticky top-0 z-20">
@@ -195,13 +196,17 @@ export const Relatorio = () => {
           </div>
 
           <div className="flex justify-end m-10">
-            <button className="group fixed bottom-18 right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-[#1f4d3a] to-[#2d6a4f] text-white shadow-lg transition-all duration-300 hover:w-36 hover:shadow-xl">
+            <button
+              onClick={() => setOpen(true)}
+              className="group fixed bottom-18 right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-[#1f4d3a] to-[#2d6a4f] text-white shadow-lg transition-all duration-300 hover:w-36 hover:shadow-xl"
+            >
               <Plus className="h-5 w-5 shrink-0 transition-transform duration-300 group-hover:rotate-90" />
 
               <span className="max-w-0 overflow-hidden whitespace-nowrap opacity-0 transition-all duration-300 group-hover:ml-2 group-hover:max-w-[80px] group-hover:opacity-100">
                 Adicionar
               </span>
             </button>
+            <AdicionarTransaction open={open} setOpen={setOpen} />
           </div>
         </div>
       </main>
