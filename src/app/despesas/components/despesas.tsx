@@ -1,6 +1,6 @@
 "use client";
 
-import { AdicionarTransaction } from "@/app/adicionarTransacao/adicionarTransaction";
+import { AdicionarTransaction } from "@/components/adicionarTransacao/adicionarTransaction";
 import type { Transacao } from "@/app/type/type";
 import { Filtro } from "@/components/filtro/filtro";
 import { NavBar } from "@/components/navbar/navbar";

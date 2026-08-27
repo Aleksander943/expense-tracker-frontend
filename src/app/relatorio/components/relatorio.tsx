@@ -7,7 +7,7 @@ import api from "@/services/api";
 import { useEffect, useState } from "react";
 import type { Transacao } from "@/app/type/type";
 import { Mes } from "../../type/data";
-import { AdicionarTransaction } from "@/app/adicionarTransacao/adicionarTransaction";
+import { AdicionarTransaction } from "@/components/adicionarTransacao/adicionarTransaction";
 
 type transacaoType = {
   Receita: number;
