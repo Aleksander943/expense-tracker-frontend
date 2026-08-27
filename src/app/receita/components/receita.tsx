@@ -1,20 +1,24 @@
 "use client";
 
-import { AdicionarTransaction } from "@/app/adicionarTransacao/adicionarTransaction";
+import { AdicionarTransaction } from "@/components/adicionarTransacao/adicionarTransaction";
 import type { Transacao } from "@/app/type/type";
 import { Filtro } from "@/components/filtro/filtro";
 import { NavBar } from "@/components/navbar/navbar";
 import api from "@/services/api";
-import { Bell, Menu, MoreHorizontal, Plus, TrendingUp } from "lucide-react";
+import { Bell, Menu, MoreHorizontal, Pencil, Plus, TrendingUp } from "lucide-react";
 import { useEffect, useState } from "react";
+import { DeletarTransacao } from "@/components/deletarTransacao/deletar";
+import { EditarTransaction } from "@/components/editarTransacao/editar";
 
 export const Receita = () => {
+  const [openEditar, setOpenEditar] = useState(false);
+  const [transacaoSelecionada, setTransacaoSelecionada] =
+    useState<Transacao | null>(null);
   const [periodo, setPeriodo] = useState<"mes" | "3meses" | "ano">("mes");
   const [open, setOpen] = useState(false);
   const [categoria, setCategoria] = useState<string>("Todas as categorias");
   const [busca, setBusca] = useState<string>("");
-
-  const [receita, setReceita] = useState<Transacao[]>();
+  const [receita, setReceita] = useState<Transacao[]>([]);
 
   useEffect(() => {
     const receitaTotal = async () => {
@@ -208,9 +212,21 @@ export const Receita = () => {
                           </p>
                         </div>
                       </div>
-                      <p className="text-sm font-semibold text-emerald-600 tabular-nums">
-                        + R$ {transactions.value.toFixed(2)}
-                      </p>
+                      <div className="flex gap-4 items-center">
+                        <p className="text-sm font-semibold text-emerald-600 tabular-nums">
+                          + R$ {transactions.value.toFixed(2)}
+                        </p>
+
+                        <DeletarTransacao />
+                        <button
+                          onClick={() => {
+                            setOpenEditar(true);
+                            setTransacaoSelecionada(transactions);
+                          }}
+                        >
+                         <Pencil className="h-4 w-4"/>
+                        </button>
+                      </div>
                     </div>
                   ))
                 ) : (
@@ -220,6 +236,14 @@ export const Receita = () => {
                 )}
               </div>
             </div>
+
+            {transacaoSelecionada && (
+              <EditarTransaction
+                open={openEditar}
+                onOpenChange={setOpenEditar}
+                transacao={transacaoSelecionada}
+              />
+            )}
 
             <div className="overflow-hidden rounded-2xl border border-[#e4e0d2] bg-white shadow-sm">
               <div className="flex items-center justify-between border-b border-[#f0ece0] px-5 py-4 sm:px-6">

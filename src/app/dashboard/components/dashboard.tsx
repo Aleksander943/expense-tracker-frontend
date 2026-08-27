@@ -14,12 +14,15 @@ import {
   Bell,
   Menu,
   Plus,
+  Pencil,
 } from "lucide-react";
 import { useEffect, useState } from "react";
-import { AdicionarTransaction } from "../../adicionarTransacao/adicionarTransaction";
+import { AdicionarTransaction } from "../../../components/adicionarTransacao/adicionarTransaction";
 import { UseAuth } from "@/hooks/Auth";
 import type { Valores } from "./type/valores";
 import type { Transacao } from "@/app/type/type";
+import { DeletarTransacao } from "@/components/deletarTransacao/deletar";
+import { EditarTransaction } from "@/components/editarTransacao/editar";
 
 const navItems = [
   { icon: LayoutDashboard, label: "Dashboard", active: true },
@@ -31,7 +34,11 @@ const navItems = [
 
 export function Dashboard() {
   const { user } = UseAuth();
-  const [open, setOpen] = useState(false);
+  const [openAdicionar, setOpenAdicionar] = useState(false);
+  const [openDelete, setOpenDelete] = useState(false);
+  const [transacaoSelecionada, setTransacaoSelecionada] =
+    useState<Transacao | null>(null);
+  const [openEditar, setOpenEditar] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [mobileMenuOpen, setMobileMenu] = useState(false);
   const [transaction, setTransacion] = useState<Transacao[]>([]);
@@ -101,6 +108,7 @@ export function Dashboard() {
                   : ""}{" "}
                 !
               </h1>
+              <p>Acompanhe suas receitas, despesas e metas em um só lugar.</p>
             </div>
           </div>
 
@@ -236,16 +244,37 @@ export function Dashboard() {
                           </p>
                         </div>
                       </div>
+                      <div className="flex gap-4 items-center">
+                        {transactions.type === "receita" ? (
+                          <span className="text-sm font-semibold text-emerald-600 tabular-nums">
+                            + R$ {transactions.value.toFixed(2)}
+                          </span>
+                        ) : (
+                          <span className="text-sm font-semibold text-rose-600 tabular-nums">
+                            - R$ {transactions.value.toFixed(2)}
+                          </span>
+                        )}
+                        <button
+                        onClick={() => {
+                          setOpenDelete(true)
+                        }}
+                        className="p-1 text-red-600 rounded-lg hover:bg-[#f0ece0] transition-colors"
+                        >
+                        <DeletarTransacao open={openDelete} onOpenChange={setOpenDelete}/>
+                        </button>
 
-                      {transactions.type === "receita" ? (
-                        <span className="text-sm font-semibold text-emerald-600 tabular-nums">
-                          + R$ {transactions.value.toFixed(2)}
-                        </span>
-                      ) : (
-                        <span className="text-sm font-semibold text-rose-600 tabular-nums">
-                          - R$ {transactions.value.toFixed(2)}
-                        </span>
-                      )}
+                        <div>
+                          <button
+                            onClick={() => {
+                              setOpenEditar(true);
+                              setTransacaoSelecionada(transactions);
+                            }}
+                            className="p-1 text-yellow-400 rounded-lg hover:bg-[#f0ece0] transition-colors"
+                          >
+                            <Pencil className="h-4"/>
+                          </button>
+                        </div>
+                      </div>
                     </div>
                   ))
                 ) : (
@@ -255,6 +284,14 @@ export function Dashboard() {
                 )}
               </div>
             </div>
+
+            {transacaoSelecionada && (
+              <EditarTransaction
+                open={openEditar}
+                onOpenChange={setOpenEditar}
+                transacao={transacaoSelecionada}
+              />
+            )}
 
             {/* Categorias */}
             <div className="bg-white rounded-2xl border border-[#e4e0d2] overflow-hidden">
@@ -278,7 +315,7 @@ export function Dashboard() {
 
         <div className="flex justify-end m-10">
           <button
-            onClick={() => setOpen(true)}
+            onClick={() => setOpenAdicionar(true)}
             className="group fixed bottom-18 right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-[#1f4d3a] to-[#2d6a4f] text-white shadow-lg transition-all duration-300 hover:w-36 hover:shadow-xl"
           >
             <Plus className="h-5 w-5 shrink-0 transition-transform duration-300 group-hover:rotate-90" />
@@ -287,7 +324,10 @@ export function Dashboard() {
               Adicionar
             </span>
           </button>
-          <AdicionarTransaction open={open} setOpen={setOpen} />
+          <AdicionarTransaction
+            open={openAdicionar}
+            setOpen={setOpenAdicionar}
+          />
         </div>
 
         {/* ── Bottom nav — mobile ─────────────────────── */}
