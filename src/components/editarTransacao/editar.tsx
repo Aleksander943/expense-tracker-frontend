@@ -13,21 +13,18 @@ import { useState } from "react";
 type PropsEditar = {
   open: boolean;
   onOpenChange: (value: boolean) => void;
-  onCreated: () => void;
   transacao: {
     id: number;
     description: string;
-    value?: number | string;
+    value?: number;
     type: string;
-    category?: string;
     date?: string;
   }
 }
 
-export function EditarTransaction({ open, onOpenChange, onCreated, transacao }: PropsEditar) {
+export function EditarTransaction({ open, onOpenChange, transacao }: PropsEditar) {
   const [description, setDescription] = useState(transacao.description)
   const [value, setValue] = useState(String(transacao.value ?? ""))
-  const [category, setCategory] = useState(transacao.category ?? "")
   const [type, setType] = useState(transacao.type)
   const [date, setDate] = useState(transacao.date ?? new Date().toISOString().split("T")[0])
 
@@ -37,10 +34,9 @@ export function EditarTransaction({ open, onOpenChange, onCreated, transacao }: 
 
   const edit = async (id: string) => {
     try {
-      await api.put(`/transaction/${id}`, { description, value: Number(value), category, type, date });
-      alert("Editado com sucesso");
-      onCreated();
+      await api.put(`/transaction/${id}`, { description, value: Number(value), type, date });
       onOpenChange(false);
+      window.location.reload();
     } catch (error) {
       console.error("ERRO:", error);
       alert("Erro ao editar");
@@ -49,7 +45,7 @@ export function EditarTransaction({ open, onOpenChange, onCreated, transacao }: 
 
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
-      <DialogContent className="max-w-[90vw] sm:max-w-xs rounded-lg border border-[#ebebeb] bg-white p-0 shadow-[0_8px_40px_rgba(0,0,0,0.10)]">
+       <DialogContent className="sm:max-w-xl rounded-lg border border-[#ebebeb] bg-white p-0 shadow-[0_8px_40px_rgba(0,0,0,0.10)]">
         <DialogHeader className="border-b border-[#f5f5f3] px-4 pb-1 pt-2">
           <div className="mb-2 flex h-8 w-8 items-center justify-center rounded-lg bg-[#e8f4ef]">
             <Plus className="w-4 h-4"/>
@@ -109,25 +105,6 @@ export function EditarTransaction({ open, onOpenChange, onCreated, transacao }: 
           </Field>
 
           <Field>
-            <Label htmlFor="category" className="mb-[4px] block text-[11px] font-semibold uppercase text-[#9a9a94]">Categoria</Label>
-            <select
-              id="category"
-              value={category}
-              onChange={(e) => setCategory(e.target.value)}
-              className="w-full rounded-xl border border-[#ebebeb] bg-white py-2 px-3 text-[13px] outline-none"
-            >
-              <option value="" disabled>Selecione...</option>
-              <option value="trabalho">💼 Trabalho</option>
-              <option value="moradia">🏠 Moradia</option>
-              <option value="alimentacao">🍽️ Alimentação</option>
-              <option value="saude">💊 Saúde</option>
-              <option value="lazer">🎬 Lazer</option>
-              <option value="transporte">🚗 Transporte</option>
-              <option value="investimento">📈 Investimento</option>
-            </select>
-          </Field>
-
-          <Field>
             <Label htmlFor="date" className="mb-[4px] block text-[11px] font-semibold uppercase text-[#9a9a94]">Data</Label>
             <Input
               id="date"
@@ -149,7 +126,7 @@ export function EditarTransaction({ open, onOpenChange, onCreated, transacao }: 
           </Button>
           <Button
             type="submit"
-            disabled={!description || !value || !category}
+            disabled={!description || !value }
             className="flex-1 rounded-xl bg-[#2d6a4f] text-white hover:bg-[#235c43] disabled:opacity-50"
             onClick={() => edit(String(transacao.id))}
           >
