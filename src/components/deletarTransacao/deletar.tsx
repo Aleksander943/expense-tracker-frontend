@@ -1,5 +1,5 @@
 import api from "@/services/api";
-import { Trash2, TriangleAlert } from "lucide-react";
+import { TriangleAlert } from "lucide-react";
 import {
   Dialog,
   DialogContent,

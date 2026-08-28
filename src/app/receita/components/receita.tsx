@@ -11,7 +11,6 @@ import {
   MoreHorizontal,
   Pencil,
   Plus,
-  Trash,
   Trash2,
   TrendingUp,
 } from "lucide-react";
