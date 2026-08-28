@@ -15,6 +15,7 @@ import {
   Menu,
   Plus,
   Pencil,
+  Trash,
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { AdicionarTransaction } from "../../../components/adicionarTransacao/adicionarTransaction";
@@ -36,9 +37,9 @@ export function Dashboard() {
   const { user } = UseAuth();
   const [openAdicionar, setOpenAdicionar] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
+  const [openEditar, setOpenEditar] = useState(false);
   const [transacaoSelecionada, setTransacaoSelecionada] =
     useState<Transacao | null>(null);
-  const [openEditar, setOpenEditar] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [mobileMenuOpen, setMobileMenu] = useState(false);
   const [transaction, setTransacion] = useState<Transacao[]>([]);
@@ -77,6 +78,8 @@ export function Dashboard() {
 
     Informacoes();
   }, []);
+
+  console.log(transacaoSelecionada);
 
   return (
     <div className="min-h-screen bg-[#f3f1ea] flex font-[Inter,system-ui,sans-serif] text-[#1a1a18]">
@@ -254,26 +257,26 @@ export function Dashboard() {
                             - R$ {transactions.value.toFixed(2)}
                           </span>
                         )}
+
                         <button
-                        onClick={() => {
-                          setOpenDelete(true)
-                        }}
-                        className="p-1 text-red-600 rounded-lg hover:bg-[#f0ece0] transition-colors"
+                          onClick={() => {
+                            setOpenEditar(true);
+                            setTransacaoSelecionada(transactions);
+                          }}
+                          className="p-1 text-[#64748B] rounded-lg hover:bg-[#f0ece0] transition-colors"
                         >
-                        <DeletarTransacao open={openDelete} onOpenChange={setOpenDelete}/>
+                          <Pencil className="h-4" />
                         </button>
 
-                        <div>
-                          <button
-                            onClick={() => {
-                              setOpenEditar(true);
-                              setTransacaoSelecionada(transactions);
-                            }}
-                            className="p-1 text-yellow-400 rounded-lg hover:bg-[#f0ece0] transition-colors"
-                          >
-                            <Pencil className="h-4"/>
-                          </button>
-                        </div>
+                        <button
+                          onClick={() => {
+                            setOpenDelete(true);
+                            setTransacaoSelecionada(transactions);
+                          }}
+                          className="p-1 text-[#DC2626] rounded-lg hover:bg-[#f0ece0] transition-colors"
+                        >
+                          <Trash className="h-4" />
+                        </button>
                       </div>
                     </div>
                   ))
@@ -292,6 +295,12 @@ export function Dashboard() {
                 transacao={transacaoSelecionada}
               />
             )}
+
+            <DeletarTransacao
+              open={openDelete}
+              onOpenChange={setOpenDelete}
+              transacao={transacaoSelecionada}
+            />
 
             {/* Categorias */}
             <div className="bg-white rounded-2xl border border-[#e4e0d2] overflow-hidden">

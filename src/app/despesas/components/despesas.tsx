@@ -5,12 +5,26 @@ import type { Transacao } from "@/app/type/type";
 import { Filtro } from "@/components/filtro/filtro";
 import { NavBar } from "@/components/navbar/navbar";
 import api from "@/services/api";
-import { Bell, Menu, MoreHorizontal, Plus } from "lucide-react";
+import {
+  Bell,
+  Menu,
+  MoreHorizontal,
+  Pencil,
+  Plus,
+  Trash,
+  Trash2,
+} from "lucide-react";
 import { useEffect, useState } from "react";
+import { DeletarTransacao } from "@/components/deletarTransacao/deletar";
+import { EditarTransaction } from "@/components/editarTransacao/editar";
 
 export const Despesas = () => {
   const [receita, setReceita] = useState<Transacao[]>();
-  const [open, setOpen] = useState(false);
+  const [openAdicionar, setOpenAdicionar] = useState(false);
+  const [openDelete, setOpenDelete] = useState(false);
+  const [openEditar, setOpenEditar] = useState(false);
+  const [transacaoSelecionada, setTransacaoSelecionada] =
+    useState<Transacao | null>(null);
   const [periodo, setPeriodo] = useState<"mes" | "3meses" | "ano">("mes");
   const [categoria, setCategoria] = useState<string>("Todas as categorias");
   const [busca, setBusca] = useState<string>("");
@@ -203,9 +217,31 @@ export const Despesas = () => {
                           </p>
                         </div>
                       </div>
-                      <p className="text-sm font-semibold text-rose-600 tabular-nums">
-                        - R$ {transactions.value.toFixed(2)}
-                      </p>
+                      <div className="flex gap-4 items-center">
+                        <p className="text-sm font-semibold text-rose-600 tabular-nums">
+                          - R$ {transactions.value.toFixed(2)}
+                        </p>
+
+                        <button
+                          onClick={() => {
+                            setOpenEditar(true);
+                            setTransacaoSelecionada(transactions);
+                          }}
+                          className="p-1 text-[#64748B] rounded-lg hover:bg-[#f0ece0] transition-colors"
+                        >
+                          <Pencil className="h-4" />
+                        </button>
+
+                        <button
+                          onClick={() => {
+                            setOpenDelete(true);
+                            setTransacaoSelecionada(transactions);
+                          }}
+                          className="p-1 text-[#DC2626] rounded-lg hover:bg-[#f0ece0] transition-colors"
+                        >
+                          <Trash2 />
+                        </button>
+                      </div>
                     </div>
                   ))
                 ) : (
@@ -215,6 +251,20 @@ export const Despesas = () => {
                 )}
               </div>
             </div>
+
+            {transacaoSelecionada && (
+              <EditarTransaction
+                open={openEditar}
+                onOpenChange={setOpenEditar}
+                transacao={transacaoSelecionada}
+              />
+            )}
+
+            <DeletarTransacao
+              open={openDelete}
+              onOpenChange={setOpenDelete}
+              transacao={transacaoSelecionada}
+            />
 
             <div className="overflow-hidden rounded-2xl border border-[#e4e0d2] bg-white shadow-sm">
               <div className="flex items-center justify-between border-b border-[#f0ece0] px-5 py-4 sm:px-6">
@@ -237,7 +287,7 @@ export const Despesas = () => {
 
           <div className="flex justify-end m-10">
             <button
-              onClick={() => setOpen(true)}
+              onClick={() => setOpenAdicionar(true)}
               className="group fixed bottom-18 right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-[#1f4d3a] to-[#2d6a4f] text-white shadow-lg transition-all duration-300 hover:w-36 hover:shadow-xl"
             >
               <Plus className="h-5 w-5 shrink-0 transition-transform duration-300 group-hover:rotate-90" />
@@ -246,7 +296,10 @@ export const Despesas = () => {
                 Adicionar
               </span>
             </button>
-            <AdicionarTransaction open={open} setOpen={setOpen} />
+            <AdicionarTransaction
+              open={openAdicionar}
+              setOpen={setOpenAdicionar}
+            />
           </div>
         </div>
       </main>
