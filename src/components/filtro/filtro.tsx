@@ -6,13 +6,19 @@ interface FiltroProps {
   categoria: string;
   setCategoria: (valor: string) => void;
   busca: string;
-  setBusca:(valor: string) => void;
+  setBusca: (valor: string) => void;
   colorButton: string;
 }
 
-export const Filtro = ({periodo, setPeriodo, categoria, setCategoria, busca, setBusca, colorButton }: FiltroProps) => {
-  
-
+export const Filtro = ({
+  periodo,
+  setPeriodo,
+  categoria,
+  setCategoria,
+  busca,
+  setBusca,
+  colorButton,
+}: FiltroProps) => {
   return (
     <div className="flex flex-wrap items-center gap-2">
       <div className="flex items-center gap-1 rounded-xl bg-white p-1 border border-[#e4e0d2]">

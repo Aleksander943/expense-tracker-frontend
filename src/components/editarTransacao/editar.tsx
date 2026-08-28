@@ -1,14 +1,20 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Dialog,DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { Field, FieldGroup } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import api from "@/services/api";
 import { Plus } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { useState } from "react";
-
 
 type PropsEditar = {
   open: boolean;
@@ -19,22 +25,33 @@ type PropsEditar = {
     value?: number;
     type: string;
     date?: string;
-  }
-}
+  };
+};
 
-export function EditarTransaction({ open, onOpenChange, transacao }: PropsEditar) {
-  const [description, setDescription] = useState(transacao.description)
-  const [value, setValue] = useState(String(transacao.value ?? ""))
-  const [type, setType] = useState(transacao.type)
-  const [date, setDate] = useState(transacao.date ?? new Date().toISOString().split("T")[0])
+export function EditarTransaction({
+  open,
+  onOpenChange,
+  transacao,
+}: PropsEditar) {
+  const [description, setDescription] = useState(transacao.description);
+  const [value, setValue] = useState(String(transacao.value ?? ""));
+  const [type, setType] = useState(transacao.type);
+  const [date, setDate] = useState(
+    transacao.date ?? new Date().toISOString().split("T")[0],
+  );
 
   const handleOpenChange = (isOpen: boolean) => {
-    onOpenChange(isOpen)
-  }
+    onOpenChange(isOpen);
+  };
 
   const edit = async (id: string) => {
     try {
-      await api.put(`/transaction/${id}`, { description, value: Number(value), type, date });
+      await api.put(`/transaction/${id}`, {
+        description,
+        value: Number(value),
+        type,
+        date,
+      });
       onOpenChange(false);
       window.location.reload();
     } catch (error) {
@@ -45,12 +62,14 @@ export function EditarTransaction({ open, onOpenChange, transacao }: PropsEditar
 
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
-       <DialogContent className="sm:max-w-xl rounded-lg border border-[#ebebeb] bg-white p-0 shadow-[0_8px_40px_rgba(0,0,0,0.10)]">
+      <DialogContent className="sm:max-w-xl rounded-lg border border-[#ebebeb] bg-white p-0 shadow-[0_8px_40px_rgba(0,0,0,0.10)]">
         <DialogHeader className="border-b border-[#f5f5f3] px-4 pb-1 pt-2">
           <div className="mb-2 flex h-8 w-8 items-center justify-center rounded-lg bg-[#e8f4ef]">
-            <Plus className="w-4 h-4"/>
+            <Plus className="w-4 h-4" />
           </div>
-          <DialogTitle className="text-[15px] font-bold text-[#1a1a18]">Editar transação</DialogTitle>
+          <DialogTitle className="text-[15px] font-bold text-[#1a1a18]">
+            Editar transação
+          </DialogTitle>
           <DialogDescription className="text-[12px] text-[#9a9a94]">
             Preencha os dados para editar sua transação.
           </DialogDescription>
@@ -58,13 +77,17 @@ export function EditarTransaction({ open, onOpenChange, transacao }: PropsEditar
 
         <FieldGroup className="flex flex-col gap-2.5 px-4 py-1">
           <Field>
-            <Label className="mb-[6px] block text-[11px] font-semibold uppercase text-[#9a9a94]">Tipo</Label>
+            <Label className="mb-[6px] block text-[11px] font-semibold uppercase text-[#9a9a94]">
+              Tipo
+            </Label>
             <div className="grid grid-cols-2 gap-2 rounded-xl border border-[#ebebeb] bg-[#f7f7f4] p-1">
               <button
                 type="button"
                 onClick={() => setType("receita")}
                 className={`flex items-center justify-center gap-2 rounded-lg py-2 text-[13px] font-semibold transition-all ${
-                  type === "receita" ? "bg-white text-[#2d6a4f] shadow-sm" : "text-[#9a9a94]"
+                  type === "receita"
+                    ? "bg-white text-[#2d6a4f] shadow-sm"
+                    : "text-[#9a9a94]"
                 }`}
               >
                 Receita
@@ -73,7 +96,9 @@ export function EditarTransaction({ open, onOpenChange, transacao }: PropsEditar
                 type="button"
                 onClick={() => setType("despesa")}
                 className={`flex items-center justify-center gap-2 rounded-lg py-2 text-[13px] font-semibold transition-all ${
-                  type === "despesa" ? "bg-white text-[#e63946] shadow-sm" : "text-[#9a9a94]"
+                  type === "despesa"
+                    ? "bg-white text-[#e63946] shadow-sm"
+                    : "text-[#9a9a94]"
                 }`}
               >
                 Despesa
@@ -82,7 +107,12 @@ export function EditarTransaction({ open, onOpenChange, transacao }: PropsEditar
           </Field>
 
           <Field>
-            <Label htmlFor="description" className="mb-[6px] block text-[11px] font-semibold uppercase text-[#9a9a94]">Descrição</Label>
+            <Label
+              htmlFor="description"
+              className="mb-[6px] block text-[11px] font-semibold uppercase text-[#9a9a94]"
+            >
+              Descrição
+            </Label>
             <Input
               id="description"
               value={description}
@@ -93,7 +123,12 @@ export function EditarTransaction({ open, onOpenChange, transacao }: PropsEditar
           </Field>
 
           <Field>
-            <Label htmlFor="value" className="mb-[4px] block text-[11px] font-semibold uppercase text-[#9a9a94]">Valor</Label>
+            <Label
+              htmlFor="value"
+              className="mb-[4px] block text-[11px] font-semibold uppercase text-[#9a9a94]"
+            >
+              Valor
+            </Label>
             <Input
               id="value"
               type="number"
@@ -105,7 +140,12 @@ export function EditarTransaction({ open, onOpenChange, transacao }: PropsEditar
           </Field>
 
           <Field>
-            <Label htmlFor="date" className="mb-[4px] block text-[11px] font-semibold uppercase text-[#9a9a94]">Data</Label>
+            <Label
+              htmlFor="date"
+              className="mb-[4px] block text-[11px] font-semibold uppercase text-[#9a9a94]"
+            >
+              Data
+            </Label>
             <Input
               id="date"
               type="date"
@@ -126,7 +166,7 @@ export function EditarTransaction({ open, onOpenChange, transacao }: PropsEditar
           </Button>
           <Button
             type="submit"
-            disabled={!description || !value }
+            disabled={!description || !value}
             className="flex-1 rounded-xl bg-[#2d6a4f] text-white hover:bg-[#235c43] disabled:opacity-50"
             onClick={() => edit(String(transacao.id))}
           >

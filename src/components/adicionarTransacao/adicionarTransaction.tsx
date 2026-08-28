@@ -1,4 +1,4 @@
-'use-client'
+"use-client";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -12,11 +12,7 @@ import {
 import { Field, FieldGroup } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  ArrowDownRight,
-  ArrowUpRight,
-  Plus,
-} from "lucide-react";
+import { ArrowDownRight, ArrowUpRight, Plus } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { useForm } from "react-hook-form";
@@ -35,19 +31,18 @@ interface Props {
   onCreated?: () => void | Promise<void>;
 }
 
-
-export function AdicionarTransaction({ open, setOpen, onOpenChange}: Props) {
+export function AdicionarTransaction({ open, setOpen, onOpenChange }: Props) {
   const [tipo, setTipo] = useState<"receita" | "despesa">("receita");
 
-  const { register, handleSubmit, setValue } = useForm<FormData>({  
+  const { register, handleSubmit, setValue } = useForm<FormData>({
     resolver: zodResolver(schema),
-  defaultValues: {
-    type: "receita",
-    description: "",
-    value: 0,
-    createdAt: "",
-  },
-});
+    defaultValues: {
+      type: "receita",
+      description: "",
+      value: 0,
+      createdAt: "",
+    },
+  });
 
   const closeDialog = (nextOpen: boolean) => {
     setOpen?.(nextOpen);
@@ -55,13 +50,15 @@ export function AdicionarTransaction({ open, setOpen, onOpenChange}: Props) {
   };
 
   const onSubmit = async (data: FormData) => {
-    try{
+    try {
       await api.post("/transaction", data);
       console.log("Nova transação adicionada");
       closeDialog(false);
       window.location.reload();
-    }catch (err){
-      console.log(`Tivemos um erro na hora de adicionar nova informação ${err}`)
+    } catch (err) {
+      console.log(
+        `Tivemos um erro na hora de adicionar nova informação ${err}`,
+      );
     }
   };
 
@@ -100,7 +97,7 @@ export function AdicionarTransaction({ open, setOpen, onOpenChange}: Props) {
                     "flex items-center justify-center gap-1.5 rounded-lg py-2 text-[13px] font-medium transition-colors",
                     tipo === "receita"
                       ? "border border-[#d8ece3] bg-white text-[#2d6a4f] shadow-sm"
-                      : "text-[#9a9a94] hover:text-[#5a5a54]"
+                      : "text-[#9a9a94] hover:text-[#5a5a54]",
                   )}
                 >
                   <ArrowUpRight className="h-3.5 w-3.5" />
@@ -117,7 +114,7 @@ export function AdicionarTransaction({ open, setOpen, onOpenChange}: Props) {
                     "flex items-center justify-center gap-1.5 rounded-lg py-2 text-[13px] font-medium transition-colors",
                     tipo === "despesa"
                       ? "border border-[#f2d9d9] bg-white text-[#b23b3b] shadow-sm"
-                      : "text-[#9a9a94] hover:text-[#5a5a54]"
+                      : "text-[#9a9a94] hover:text-[#5a5a54]",
                   )}
                 >
                   <ArrowDownRight className="h-3.5 w-3.5" />

@@ -17,7 +17,7 @@ export const AuthContext = createContext({} as AuthContextData);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true); 
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const loadStorageData = async () => {
@@ -35,7 +35,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         }
       }
 
-      setLoading(false); 
+      setLoading(false);
     };
 
     loadStorageData();
@@ -47,8 +47,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const response = await api.get("/me");
     setUser(response.data);
   };
-
-
 
   if (loading) {
     return (
