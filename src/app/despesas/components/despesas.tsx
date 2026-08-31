@@ -25,7 +25,6 @@ export const Despesas = () => {
   const [transacaoSelecionada, setTransacaoSelecionada] =
     useState<Transacao | null>(null);
   const [periodo, setPeriodo] = useState<"mes" | "3meses" | "ano">("mes");
-  const [categoria, setCategoria] = useState<string>("Todas as categorias");
   const [busca, setBusca] = useState<string>("");
 
   useEffect(() => {
@@ -175,8 +174,6 @@ export const Despesas = () => {
           <Filtro
             periodo={periodo}
             setPeriodo={setPeriodo}
-            categoria={categoria}
-            setCategoria={setCategoria}
             busca={busca}
             setBusca={setBusca}
             colorButton="bg-red-700 text-white"

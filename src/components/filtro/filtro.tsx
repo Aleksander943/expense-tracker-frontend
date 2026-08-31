@@ -3,22 +3,13 @@ import { Search } from "lucide-react";
 interface FiltroProps {
   periodo: string;
   setPeriodo: (valor: "mes" | "3meses" | "ano") => void;
-  categoria: string;
-  setCategoria: (valor: string) => void;
   busca: string;
   setBusca: (valor: string) => void;
   colorButton: string;
 }
 
-export const Filtro = ({
-  periodo,
-  setPeriodo,
-  categoria,
-  setCategoria,
-  busca,
-  setBusca,
-  colorButton,
-}: FiltroProps) => {
+export const Filtro = ({periodo, setPeriodo, busca, setBusca, colorButton }: FiltroProps) => {
+  
   return (
     <div className="flex flex-wrap items-center gap-2">
       <div className="flex items-center gap-1 rounded-xl bg-white p-1 border border-[#e4e0d2]">
@@ -59,17 +50,6 @@ export const Filtro = ({
           Este ano
         </button>
       </div>
-
-      <select
-        value={categoria}
-        onChange={(e) => setCategoria(e.target.value)}
-        className="bg-white rounded-xl px-3 py-2 text-xs text-[#1a1a18] border border-[#e4e0d2] focus:outline-none focus:ring-1 focus:ring-[#2d6a4f]"
-      >
-        <option>Todas as categorias</option>
-        <option>Salário</option>
-        <option>Freelance</option>
-        <option>Investimentos</option>
-      </select>
 
       <div className="relative flex-1 min-w-[180px]">
         <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-[#9a9a94]" />
