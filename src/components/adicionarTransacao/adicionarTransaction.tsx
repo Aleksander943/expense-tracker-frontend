@@ -36,13 +36,13 @@ export function AdicionarTransaction({ open, setOpen, onOpenChange }: Props) {
 
   const { register, handleSubmit, setValue } = useForm<FormData>({
     resolver: zodResolver(schema),
-    defaultValues: {
-      type: "receita",
-      description: "",
-      value: 0,
-      createdAt: "",
-    },
-  });
+  defaultValues: {
+    type: "receita",
+    description: "",
+    value: 0,
+    transactionDate: "",
+  },
+});
 
   const closeDialog = (nextOpen: boolean) => {
     setOpen?.(nextOpen);
@@ -173,7 +173,7 @@ export function AdicionarTransaction({ open, setOpen, onOpenChange }: Props) {
 
               <Input
                 id="date"
-                {...register("createdAt")}
+                {...register("transactionDate")}
                 type="date"
                 className="w-full rounded-xl border border-[#ebebeb] px-4 py-3 text-[14px]"
               />
