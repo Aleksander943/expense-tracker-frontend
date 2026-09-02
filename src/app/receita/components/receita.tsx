@@ -28,27 +28,27 @@ export const Receita = () => {
   const [busca, setBusca] = useState<string>("");
   const [receita, setReceita] = useState<Transacao[]>([]);
 
-  useEffect(() => {
-    const receitaTotal = async () => {
-      try {
-        const resultado = await api.get("/transactions");
-        const data = resultado.data;
-        const filtrar = data.filter(
-          (item: Transacao) => item.type === "receita",
-        );
-        setReceita(filtrar);
-      } catch (error) {
-        console.log(error);
-      }
-    };
+  const receitaTotal = async () => {
+    try {
+      const resultado = await api.get("/transactions");
+      const data = resultado.data;
+      const filtrar = data.filter(
+        (item: Transacao) => item.type === "receita",
+      );
+      setReceita(filtrar);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
+  useEffect(() => {
     receitaTotal();
   }, []);
 
   const filtroBusca = receita?.filter(({ description }) =>
     description?.toLowerCase().includes(busca?.toLowerCase()),
   );
-
+  
   return (
     <div className="min-h-screen bg-[#f3f1ea] flex font-[Inter,system-ui,sans-serif] text-[#1a1a18]">
       <div className="fixed inset-0 bg-black/40 z-30 lg:hidden" />
@@ -300,6 +300,7 @@ export const Receita = () => {
             <AdicionarTransaction
               open={openAdicionar}
               setOpen={setOpenAdicionar}
+              atualizar={receitaTotal}
             />
           </div>
         </div>

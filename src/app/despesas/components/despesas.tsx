@@ -27,9 +27,8 @@ export const Despesas = () => {
   const [periodo, setPeriodo] = useState<"mes" | "3meses" | "ano">("mes");
   const [busca, setBusca] = useState<string>("");
 
-  useEffect(() => {
-    const infoDespesas = async () => {
-      try {
+  const infoDespesas = async () => {
+    try {
         const response = await api.get("/transactions");
         const data = response?.data;
         const filter = data.filter(
@@ -40,7 +39,8 @@ export const Despesas = () => {
         console.log(err);
       }
     };
-
+    
+    useEffect(() => {
     infoDespesas();
   }, []);
 
@@ -295,6 +295,7 @@ export const Despesas = () => {
             <AdicionarTransaction
               open={openAdicionar}
               setOpen={setOpenAdicionar}
+              atualizar={infoDespesas}
             />
           </div>
         </div>

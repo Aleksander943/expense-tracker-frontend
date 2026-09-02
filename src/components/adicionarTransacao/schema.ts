@@ -9,7 +9,7 @@ export const schema = z.object({
     .number()
     .positive({ message: "O valor deve ser maior que zero" }),
 
-  createdAt: z.string().min(1, { message: "A data é obrigatória" }),
+  transactionDate: z.string().min(1, { message: "A data é obrigatória" }),
 });
 
 export type FormData = z.infer<typeof schema>;

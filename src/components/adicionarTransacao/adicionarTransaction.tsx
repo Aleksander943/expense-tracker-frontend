@@ -29,9 +29,10 @@ interface Props {
   setOpen?: (open: boolean) => void;
   onOpenChange?: (open: boolean) => void;
   onCreated?: () => void | Promise<void>;
+  atualizar: () => void | Promise<void>;
 }
 
-export function AdicionarTransaction({ open, setOpen, onOpenChange }: Props) {
+export function AdicionarTransaction({ open, setOpen, onOpenChange, atualizar }: Props) {
   const [tipo, setTipo] = useState<"receita" | "despesa">("receita");
 
   const { register, handleSubmit, setValue } = useForm<FormData>({
@@ -54,7 +55,7 @@ export function AdicionarTransaction({ open, setOpen, onOpenChange }: Props) {
       await api.post("/transaction", data);
       console.log("Nova transação adicionada");
       closeDialog(false);
-      window.location.reload();
+     atualizar();
     } catch (err) {
       console.log(
         `Tivemos um erro na hora de adicionar nova informação ${err}`,

@@ -49,37 +49,36 @@ export function Dashboard() {
     Total: 0,
   });
 
-  useEffect(() => {
-    const Informacoes = async () => {
-      try {
-        const valores = await api.get<Transacao[]>("/transactions");
-        const requisicao = valores.data;
+const Informacoes = async () => {
+  try {
+    const valores = await api.get<Transacao[]>("/transactions");
+    const requisicao = valores.data;
 
-        const Receita = requisicao
-          .filter((item: Transacao) => item.type === "receita")
-          .reduce((total: number, item: Transacao) => total + item.value, 0);
+    const Receita = requisicao
+      .filter((item) => item.type === "receita")
+      .reduce((total, item) => total + item.value, 0);
 
-        const Despesas = requisicao
-          .filter((item: Transacao) => item.type === "despesa")
-          .reduce((total: number, item: Transacao) => total + item.value, 0);
+    const Despesas = requisicao
+      .filter((item) => item.type === "despesa")
+      .reduce((total, item) => total + item.value, 0);
 
-        const Total = Receita - Despesas;
+    const Total = Receita - Despesas;
 
-        setValor({
-          Receita,
-          Despesas,
-          Total,
-        });
-        setTransacion(requisicao);
-      } catch (error) {
-        console.log(error);
-      }
-    };
+    setValor({
+      Receita,
+      Despesas,
+      Total,
+    });
 
-    Informacoes();
-  }, []);
+    setTransacion(requisicao);
+  } catch (error) {
+    console.log(error);
+  }
+};
 
-  console.log(transacaoSelecionada);
+useEffect(() => {
+  Informacoes();
+}, []);
 
   return (
     <div className="min-h-screen bg-[#f3f1ea] flex font-[Inter,system-ui,sans-serif] text-[#1a1a18]">
@@ -336,6 +335,7 @@ export function Dashboard() {
           <AdicionarTransaction
             open={openAdicionar}
             setOpen={setOpenAdicionar}
+            atualizar={Informacoes}
           />
         </div>
 
