@@ -24,7 +24,7 @@ type PropsEditar = {
     description: string;
     value?: number;
     type: string;
-    date?: string;
+    transactionDate?: string;
   };
 };
 
@@ -37,7 +37,7 @@ export function EditarTransaction({
   const [value, setValue] = useState(String(transacao.value ?? ""));
   const [type, setType] = useState(transacao.type);
   const [date, setDate] = useState(
-    transacao.date ?? new Date().toISOString().split("T")[0],
+    transacao.transactionDate ?? new Date().toISOString().split("T")[0],
   );
 
   const handleOpenChange = (isOpen: boolean) => {
@@ -50,7 +50,7 @@ export function EditarTransaction({
         description,
         value: Number(value),
         type,
-        date,
+        transactionDate: date,
       });
       onOpenChange(false);
       window.location.reload();
