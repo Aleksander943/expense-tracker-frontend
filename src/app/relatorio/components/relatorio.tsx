@@ -26,59 +26,58 @@ export const Relatorio = () => {
   const [open, setOpen] = useState(false);
   const [dadosPorMes, setDadosPorMes] = useState<dadosMesType[]>([]);
 
-  useEffect(() => {
-    const informacao = async () => {
-      try {
-        const valores = await api.get<Transacao[]>("/transactions");
-
-        const requisicao = valores.data;
-
-        const agora = new Date().getMonth() + 1;
-
-        const meses = Mes.filter(({ id }) => id <= agora).slice(-6);
-
-        const Receita = requisicao
-          .filter((item) => item.type === "receita")
-          .reduce((total, item) => total + item.value, 0);
-
-        const Despesas = requisicao
-          .filter((item) => item.type === "despesa")
-          .reduce((total, item) => total + item.value, 0);
-
-        const dadosPorMes = meses.map((mes) => {
-          const transacoesDoMes = requisicao.filter((item) => {
-            const data = new Date(item.createdAt);
-
-            return data.getMonth() + 1 === mes.id;
-          });
-
-          const Receita = transacoesDoMes
-            .filter((item) => item.type === "receita")
-            .reduce((total, item) => total + item.value, 0);
-
-          const Despesas = transacoesDoMes
-            .filter((item) => item.type === "despesa")
-            .reduce((total, item) => total + item.value, 0);
-
-          return {
-            id: mes.id,
-            abreviacao: mes.abreviacao,
-            Receita,
-            Despesas,
-          };
+  const informacao = async () => {
+    try {
+      const valores = await api.get<Transacao[]>("/transactions");
+      
+      const requisicao = valores.data;
+      
+      const agora = new Date().getMonth() + 1;
+      
+      const meses = Mes.filter(({ id }) => id <= agora).slice(-6);
+      
+      const Receita = requisicao
+      .filter((item) => item.type === "receita")
+      .reduce((total, item) => total + item.value, 0);
+      
+      const Despesas = requisicao
+      .filter((item) => item.type === "despesa")
+      .reduce((total, item) => total + item.value, 0);
+      
+      const dadosPorMes = meses.map((mes) => {
+        const transacoesDoMes = requisicao.filter((item) => {
+          const data = new Date(item.transactionDate);
+          return data.getMonth() + 1 === mes.id;
         });
-
-        setTotal({
+        
+        const Receita = transacoesDoMes
+        .filter((item) => item.type === "receita")
+        .reduce((total, item) => total + item.value, 0);
+        
+        const Despesas = transacoesDoMes
+        .filter((item) => item.type === "despesa")
+        .reduce((total, item) => total + item.value, 0);
+        
+        return {
+          id: mes.id,
+          abreviacao: mes.abreviacao,
           Receita,
           Despesas,
-        });
-
-        setDadosPorMes(dadosPorMes);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
+        };
+      });
+      
+      setTotal({
+        Receita,
+        Despesas,
+      });
+      
+      setDadosPorMes(dadosPorMes);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  
+  useEffect(() => {
     informacao();
   }, []);
 
@@ -206,7 +205,7 @@ export const Relatorio = () => {
                 Adicionar
               </span>
             </button>
-            <AdicionarTransaction open={open} setOpen={setOpen} />
+            <AdicionarTransaction open={open} setOpen={setOpen} atualizar={informacao} />
           </div>
         </div>
       </main>
