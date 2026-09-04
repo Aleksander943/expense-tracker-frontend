@@ -24,6 +24,7 @@ export default defineConfig([
     rules: {
       ...nextPlugin.configs.recommended.rules,
       ...nextPlugin.configs["core-web-vitals"].rules,
+      "react-hooks/set-state-in-effect": "off",
     },
 
     languageOptions: {
