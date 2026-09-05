@@ -8,8 +8,13 @@ interface FiltroProps {
   colorButton: string;
 }
 
-export const Filtro = ({periodo, setPeriodo, busca, setBusca, colorButton }: FiltroProps) => {
-  
+export const Filtro = ({
+  periodo,
+  setPeriodo,
+  busca,
+  setBusca,
+  colorButton,
+}: FiltroProps) => {
   return (
     <div className="flex flex-wrap items-center gap-2">
       <div className="flex items-center gap-1 rounded-xl bg-white p-1 border border-[#e4e0d2]">

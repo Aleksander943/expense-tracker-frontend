@@ -1,13 +1,14 @@
 "use client";
 
 import { NavBar } from "@/components/navbar/navbar";
-import { Bell, Menu, MoreHorizontal, Plus } from "lucide-react";
+import { Menu, Plus } from "lucide-react";
 import { Grafico } from "./graficoEstatistica";
 import api from "@/services/api";
 import { useEffect, useState } from "react";
 import type { Transacao } from "@/app/type/type";
 import { Mes } from "../../type/data";
 import { AdicionarTransaction } from "@/components/adicionarTransacao/adicionarTransaction";
+import { Categorias } from "@/components/categorias/categorias";
 
 type transacaoType = {
   Receita: number;
@@ -29,35 +30,35 @@ export const Relatorio = () => {
   const informacao = async () => {
     try {
       const valores = await api.get<Transacao[]>("/transactions");
-      
+
       const requisicao = valores.data;
-      
+
       const agora = new Date().getMonth() + 1;
-      
+
       const meses = Mes.filter(({ id }) => id <= agora).slice(-6);
-      
+
       const Receita = requisicao
-      .filter((item) => item.type === "receita")
-      .reduce((total, item) => total + item.value, 0);
-      
+        .filter((item) => item.type === "receita")
+        .reduce((total, item) => total + item.value, 0);
+
       const Despesas = requisicao
-      .filter((item) => item.type === "despesa")
-      .reduce((total, item) => total + item.value, 0);
-      
+        .filter((item) => item.type === "despesa")
+        .reduce((total, item) => total + item.value, 0);
+
       const dadosPorMes = meses.map((mes) => {
         const transacoesDoMes = requisicao.filter((item) => {
           const data = new Date(item.transactionDate);
           return data.getMonth() + 1 === mes.id;
         });
-        
+
         const Receita = transacoesDoMes
-        .filter((item) => item.type === "receita")
-        .reduce((total, item) => total + item.value, 0);
-        
+          .filter((item) => item.type === "receita")
+          .reduce((total, item) => total + item.value, 0);
+
         const Despesas = transacoesDoMes
-        .filter((item) => item.type === "despesa")
-        .reduce((total, item) => total + item.value, 0);
-        
+          .filter((item) => item.type === "despesa")
+          .reduce((total, item) => total + item.value, 0);
+
         return {
           id: mes.id,
           abreviacao: mes.abreviacao,
@@ -65,18 +66,18 @@ export const Relatorio = () => {
           Despesas,
         };
       });
-      
+
       setTotal({
         Receita,
         Despesas,
       });
-      
+
       setDadosPorMes(dadosPorMes);
     } catch (error) {
       console.log(error);
     }
   };
-  
+
   useEffect(() => {
     informacao();
   }, []);
@@ -100,15 +101,6 @@ export const Relatorio = () => {
               </h1>
               <p>Visão geral da sua saúde finaceira</p>
             </div>
-          </div>
-
-          <div className="flex items-center gap-2">
-            <button className="relative p-2 rounded-xl hover:bg-[#e4e0d2] transition-colors">
-              <Bell className="w-4 h-4 text-[#9a9a94]" />
-              <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 bg-[#2d6a4f] rounded-full" />
-            </button>
-
-            <button className="hidden lg:block text-xs text-[#9a9a94] hover:text-[#1a1a18] transition-colors px-2 py-1 rounded-lg hover:bg-[#e4e0d2]"></button>
           </div>
         </header>
 
@@ -175,23 +167,7 @@ export const Relatorio = () => {
               <Grafico dadosPorMes={dadosPorMes} />
             </div>
 
-            <div className="overflow-hidden rounded-2xl border border-[#e4e0d2] bg-white shadow-sm">
-              <div className="flex items-center justify-between border-b border-[#f0ece0] px-5 py-4 sm:px-6">
-                <h2
-                  className="text-sm font-semibold text-[#1a1a18]"
-                  style={{ fontFamily: "'Georgia', serif" }}
-                >
-                  Categorias
-                </h2>
-                <button className="rounded-lg p-1 transition-colors hover:bg-[#f0ece0]">
-                  <MoreHorizontal className="h-4 w-4 text-[#9a9a94]" />
-                </button>
-              </div>
-
-              <div className="space-y-3 p-4 sm:p-6 text-center">
-                Em desenvolvimento
-              </div>
-            </div>
+            <Categorias />
           </div>
 
           <div className="flex justify-end m-10">
@@ -205,7 +181,11 @@ export const Relatorio = () => {
                 Adicionar
               </span>
             </button>
-            <AdicionarTransaction open={open} setOpen={setOpen} atualizar={informacao} />
+            <AdicionarTransaction
+              open={open}
+              setOpen={setOpen}
+              atualizar={informacao}
+            />
           </div>
         </div>
       </main>

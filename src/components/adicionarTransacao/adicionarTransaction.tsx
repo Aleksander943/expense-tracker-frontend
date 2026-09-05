@@ -32,18 +32,23 @@ interface Props {
   atualizar: () => void | Promise<void>;
 }
 
-export function AdicionarTransaction({ open, setOpen, onOpenChange, atualizar }: Props) {
+export function AdicionarTransaction({
+  open,
+  setOpen,
+  onOpenChange,
+  atualizar,
+}: Props) {
   const [tipo, setTipo] = useState<"receita" | "despesa">("receita");
 
   const { register, handleSubmit, setValue } = useForm<FormData>({
     resolver: zodResolver(schema),
-  defaultValues: {
-    type: "receita",
-    description: "",
-    value: 0,
-    transactionDate: "",
-  },
-});
+    defaultValues: {
+      type: "receita",
+      description: "",
+      value: 0,
+      transactionDate: "",
+    },
+  });
 
   const closeDialog = (nextOpen: boolean) => {
     setOpen?.(nextOpen);
@@ -55,7 +60,7 @@ export function AdicionarTransaction({ open, setOpen, onOpenChange, atualizar }:
       await api.post("/transaction", data);
       console.log("Nova transação adicionada");
       closeDialog(false);
-     atualizar();
+      atualizar();
     } catch (err) {
       console.log(
         `Tivemos um erro na hora de adicionar nova informação ${err}`,
