@@ -5,48 +5,35 @@ import type { Transacao } from "@/app/type/type";
 import { Filtro } from "@/components/filtro/filtro";
 import { NavBar } from "@/components/navbar/navbar";
 import api from "@/services/api";
-import {
-  Bell,
-  Menu,
-  MoreHorizontal,
-  Pencil,
-  Plus,
-  Trash2,
-} from "lucide-react";
+import { Menu, Plus } from "lucide-react";
 import { useEffect, useState } from "react";
-import { DeletarTransacao } from "@/components/deletarTransacao/deletar";
-import { EditarTransaction } from "@/components/editarTransacao/editar";
+import { Categorias } from "@/components/categorias/categorias";
+import { TransacoesRecentes } from "@/components/transacoesRecentes/transacoesRecentes";
 
 export const Despesas = () => {
-  const [receita, setReceita] = useState<Transacao[]>();
+  const [receita, setReceita] = useState<Transacao[]>([]);
   const [openAdicionar, setOpenAdicionar] = useState(false);
-  const [openDelete, setOpenDelete] = useState(false);
-  const [openEditar, setOpenEditar] = useState(false);
-  const [transacaoSelecionada, setTransacaoSelecionada] =
-    useState<Transacao | null>(null);
   const [periodo, setPeriodo] = useState<"mes" | "3meses" | "ano">("mes");
   const [busca, setBusca] = useState<string>("");
 
   const infoDespesas = async () => {
     try {
-        const response = await api.get("/transactions");
-        const data = response?.data;
-        const filter = data.filter(
-          (item: Transacao) => item.type === "despesa",
-        );
-        setReceita(filter);
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    
-    useEffect(() => {
+      const response = await api.get("/transactions");
+      const data = response?.data;
+      const filter = data.filter((item: Transacao) => item.type === "despesa");
+      setReceita(filter);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
     infoDespesas();
   }, []);
 
-  const filtroBusca = receita?.filter(({ description }) =>
-    description?.toLowerCase().includes(busca?.toLowerCase()),
-  );
+  // const filtroBusca = receita?.filter(({ description }) =>
+  //   description?.toLowerCase().includes(busca?.toLowerCase()),
+  // );
 
   return (
     <div className="min-h-screen bg-[#f3f1ea] flex font-[Inter,system-ui,sans-serif] text-[#1a1a18]">
@@ -67,15 +54,6 @@ export const Despesas = () => {
               </h1>
               <p>Acompanhe todas as suas saídas financeiras</p>
             </div>
-          </div>
-
-          <div className="flex items-center gap-2">
-            <button className="relative p-2 rounded-xl hover:bg-[#e4e0d2] transition-colors">
-              <Bell className="w-4 h-4 text-[#9a9a94]" />
-              <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 bg-[#2d6a4f] rounded-full" />
-            </button>
-
-            <button className="hidden lg:block text-xs text-[#9a9a94] hover:text-[#1a1a18] transition-colors px-2 py-1 rounded-lg hover:bg-[#e4e0d2]"></button>
           </div>
         </header>
 
@@ -188,97 +166,12 @@ export const Despesas = () => {
                 >
                   Transações recentes
                 </h2>
-                <button className="rounded-lg p-1 transition-colors hover:bg-[#f0ece0]">
-                  <MoreHorizontal className="h-4 w-4 text-[#9a9a94]" />
-                </button>
               </div>
 
-              <div className="divide-y divide-gray-100">
-                {filtroBusca?.length !== 0 ? (
-                  filtroBusca?.map((transactions, index) => (
-                    <div
-                      key={index}
-                      className="group flex items-center justify-between px-4 py-3 transition-colors hover:bg-gray-50/60 sm:px-6"
-                    >
-                      <div className="flex items-center gap-3">
-                        <div className="flex h-9 w-9 items-center justify-center rounded-full text-xs font-semib bg-rose-50 text-rose-600">
-                          {"↓"}
-                        </div>
-                        <div className="flex-1">
-                          <p className="text-sm font-medium text-[#1a1a18]">
-                            {transactions.description}
-                          </p>
-                          <p className="text-xs text-[#9a9a94]">
-                            {transactions.type}
-                          </p>
-                        </div>
-                      </div>
-                      <div className="flex gap-4 items-center">
-                        <p className="text-sm font-semibold text-rose-600 tabular-nums">
-                          - R$ {transactions.value.toFixed(2)}
-                        </p>
-
-                        <button
-                          onClick={() => {
-                            setOpenEditar(true);
-                            setTransacaoSelecionada(transactions);
-                          }}
-                          className="p-1 text-[#64748B] rounded-lg hover:bg-[#f0ece0] transition-colors"
-                        >
-                          <Pencil className="h-4" />
-                        </button>
-
-                        <button
-                          onClick={() => {
-                            setOpenDelete(true);
-                            setTransacaoSelecionada(transactions);
-                          }}
-                          className="p-1 text-[#DC2626] rounded-lg hover:bg-[#f0ece0] transition-colors"
-                        >
-                          <Trash2 />
-                        </button>
-                      </div>
-                    </div>
-                  ))
-                ) : (
-                  <div className="text-center px-4 py-5">
-                    <p>Nenhuma transação cadastrada</p>
-                  </div>
-                )}
-              </div>
+              <TransacoesRecentes transaction={receita} />
             </div>
 
-            {transacaoSelecionada && (
-              <EditarTransaction
-                open={openEditar}
-                onOpenChange={setOpenEditar}
-                transacao={transacaoSelecionada}
-              />
-            )}
-
-            <DeletarTransacao
-              open={openDelete}
-              onOpenChange={setOpenDelete}
-              transacao={transacaoSelecionada}
-            />
-
-            <div className="overflow-hidden rounded-2xl border border-[#e4e0d2] bg-white shadow-sm">
-              <div className="flex items-center justify-between border-b border-[#f0ece0] px-5 py-4 sm:px-6">
-                <h2
-                  className="text-sm font-semibold text-[#1a1a18]"
-                  style={{ fontFamily: "'Georgia', serif" }}
-                >
-                  Categorias
-                </h2>
-                <button className="rounded-lg p-1 transition-colors hover:bg-[#f0ece0]">
-                  <MoreHorizontal className="h-4 w-4 text-[#9a9a94]" />
-                </button>
-              </div>
-
-              <div className="space-y-3 p-4 sm:p-6 text-center">
-                Em desenvolvimento
-              </div>
-            </div>
+            <Categorias />
           </div>
 
           <div className="flex justify-end m-10">
