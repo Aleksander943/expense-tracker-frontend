@@ -10,23 +10,26 @@ import {
 } from "../ui/dialog";
 import type { Transacao } from "@/app/type/type";
 
+
 interface propsDelete {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   transacao: Transacao | null;
+  atualizar: () => void | Promise<void>;
 }
 
 export const DeletarTransacao = ({
   open,
   onOpenChange,
   transacao,
+  atualizar,
 }: propsDelete) => {
   const deletar = async (id: number | undefined) => {
     if (id === undefined) return;
     try {
       await api.delete(`/transaction/${id}`);
       onOpenChange(false);
-      window.location.reload();
+      atualizar();
     } catch {
       alert("Erro ao deletar");
     }

@@ -168,7 +168,7 @@ export const Despesas = () => {
                 </h2>
               </div>
 
-              <TransacoesRecentes transaction={receita} />
+              <TransacoesRecentes transaction={receita} atualizar={infoDespesas} />
             </div>
 
             <Categorias />

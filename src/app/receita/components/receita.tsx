@@ -174,7 +174,7 @@ export const Receita = () => {
                   <MoreHorizontal className="h-4 w-4 text-[#9a9a94]" />
                 </button>
               </div>
-              <TransacoesRecentes transaction={receita} />
+              <TransacoesRecentes transaction={receita} atualizar={receitaTotal}/>
             </div>
             <Categorias />
           </div>

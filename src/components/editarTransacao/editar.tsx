@@ -19,6 +19,7 @@ import { useState } from "react";
 type PropsEditar = {
   open: boolean;
   onOpenChange: (value: boolean) => void;
+   atualizar: () => void | Promise<void>;
   transacao: {
     id: number;
     description: string;
@@ -32,6 +33,7 @@ export function EditarTransaction({
   open,
   onOpenChange,
   transacao,
+  atualizar,
 }: PropsEditar) {
   const [description, setDescription] = useState(transacao.description);
   const [value, setValue] = useState(String(transacao.value ?? ""));
@@ -53,7 +55,7 @@ export function EditarTransaction({
         transactionDate: date,
       });
       onOpenChange(false);
-      window.location.reload();
+      atualizar();
     } catch (error) {
       console.error("ERRO:", error);
       alert("Erro ao editar");

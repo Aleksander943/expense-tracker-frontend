@@ -4,11 +4,12 @@ import { useState } from "react";
 import { EditarTransaction } from "../editarTransacao/editar";
 import { DeletarTransacao } from "../deletarTransacao/deletar";
 
-export const TransacoesRecentes = ({
-  transaction,
-}: {
+interface Props {
   transaction: Transacao[];
-}) => {
+  atualizar: () => void | Promise<void>;
+}
+
+export const TransacoesRecentes = ({ transaction, atualizar }: Props) => {
   const [openDelete, setOpenDelete] = useState(false);
   const [openEditar, setOpenEditar] = useState(false);
   const [transacaoSelecionada, setTransacaoSelecionada] =
@@ -85,6 +86,7 @@ export const TransacoesRecentes = ({
           open={openEditar}
           onOpenChange={setOpenEditar}
           transacao={transacaoSelecionada}
+          atualizar={atualizar}
         />
       )}
 
@@ -92,6 +94,7 @@ export const TransacoesRecentes = ({
         open={openDelete}
         onOpenChange={setOpenDelete}
         transacao={transacaoSelecionada}
+        atualizar={atualizar}
       />
     </div>
   );
