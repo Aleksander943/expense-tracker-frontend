@@ -12,4 +12,5 @@ export const schema = z.object({
   transactionDate: z.string().min(1, { message: "A data é obrigatória" }),
 });
 
-export type FormData = z.infer<typeof schema>;
+export type FormInput = z.input<typeof schema>;
+export type FormData = z.output<typeof schema>;
