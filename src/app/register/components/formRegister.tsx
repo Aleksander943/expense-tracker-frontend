@@ -111,8 +111,9 @@ export function FormRegister() {
                 <Lock className="w-4 h-4" />
               </span>
               <input
+                type={showPassword ? "text" : "password"}
                 {...register("password")}
-                placeholder="********"
+                placeholder="Crie uma senha"
                 className="bg-white w-full pl-9 pr-14 py-3 border border-[#ebebeb] rounded-xl text-sm text-[#1a1a18] placeholder-[#c4c4bc] outline-none transition-all focus:border-[#2d6a4f] focus:ring-2 focus:ring-[#2d6a4f]/10"
               />
               <button
@@ -129,6 +130,7 @@ export function FormRegister() {
                 <Lock className="w-4 h-4" />
               </span>
               <input
+                type={showPassword ? "text" : "password"}
                 {...register("confirmPassword")}
                 placeholder="Confirme a senha"
                 className="bg-white w-full pl-9 pr-14 py-3 border border-[#ebebeb] rounded-xl text-sm text-[#1a1a18] placeholder-[#c4c4bc] outline-none transition-all focus:border-[#2d6a4f] focus:ring-2 focus:ring-[#2d6a4f]/10"
@@ -137,7 +139,9 @@ export function FormRegister() {
                 type="button"
                 onClick={() => setShowPassword((prev) => !prev)}
                 className="absolute right-3 top-1/2 -translate-y-1/2 text-[10px] font-medium text-[#9a9a94] hover:text-[#1a1a18] transition-colors"
-              ></button>
+              >
+                {showPassword ? "Ocultar" : "Mostrar"}
+              </button>
             </div>
 
             <input
