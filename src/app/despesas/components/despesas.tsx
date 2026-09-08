@@ -31,9 +31,31 @@ export const Despesas = () => {
     infoDespesas();
   }, []);
 
-  // const filtroBusca = receita?.filter(({ description }) =>
-  //   description?.toLowerCase().includes(busca?.toLowerCase()),
-  // );
+  const hoje = new Date();
+
+  const receitaPorPeriodo = receita.filter((item) => {
+    const data = new Date(item.transactionDate);
+
+    if(periodo === "mes"){
+     return (
+        data.getMonth() === hoje.getMonth() &&
+        data.getFullYear() === hoje.getFullYear()
+      );
+    }
+
+    
+    if (periodo === "3meses") {
+      const inicio = new Date(hoje.getFullYear(), hoje.getMonth() - 2, 1);
+
+      return data >= inicio && data <= hoje;
+    }
+
+    return data.getFullYear() === hoje.getFullYear();
+  });
+
+  const filtroBusca = receitaPorPeriodo.filter(({ description }) =>
+    description?.toLowerCase().includes(busca?.toLowerCase()),
+  );
 
   return (
     <div className="min-h-screen bg-[#f3f1ea] flex font-[Inter,system-ui,sans-serif] text-[#1a1a18]">
@@ -168,7 +190,7 @@ export const Despesas = () => {
                 </h2>
               </div>
 
-              <TransacoesRecentes transaction={receita} atualizar={infoDespesas} />
+              <TransacoesRecentes transaction={filtroBusca} atualizar={infoDespesas} />
             </div>
 
             <Categorias />

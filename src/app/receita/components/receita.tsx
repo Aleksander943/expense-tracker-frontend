@@ -31,9 +31,30 @@ export const Receita = () => {
     receitaTotal();
   }, []);
 
-  // const filtroBusca = receita?.filter(({ description }) =>
-  //   description?.toLowerCase().includes(busca?.toLowerCase()),
-  // );
+  const hoje = new Date();
+
+  const receitasPorPeriodo = receita.filter((item) => {
+    const data = new Date(item.transactionDate);
+
+    if (periodo === "mes") {
+      return (
+        data.getMonth() === hoje.getMonth() &&
+        data.getFullYear() === hoje.getFullYear()
+      );
+    }
+
+    if (periodo === "3meses") {
+      const inicio = new Date(hoje.getFullYear(), hoje.getMonth() - 2, 1);
+
+      return data >= inicio && data <= hoje;
+    }
+
+    return data.getFullYear() === hoje.getFullYear();
+  });
+
+ const filtroBusca = receitasPorPeriodo.filter(({ description }) =>
+  description.toLowerCase().includes(busca.toLowerCase()),
+);
 
   return (
     <div className="min-h-screen bg-[#f3f1ea] flex font-[Inter,system-ui,sans-serif] text-[#1a1a18]">
@@ -174,7 +195,10 @@ export const Receita = () => {
                   <MoreHorizontal className="h-4 w-4 text-[#9a9a94]" />
                 </button>
               </div>
-              <TransacoesRecentes transaction={receita} atualizar={receitaTotal}/>
+              <TransacoesRecentes
+                transaction={filtroBusca}
+                atualizar={receitaTotal}
+              />
             </div>
             <Categorias />
           </div>
