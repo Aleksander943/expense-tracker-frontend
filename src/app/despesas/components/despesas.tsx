@@ -84,7 +84,7 @@ export const Despesas = () => {
             <div className="sm:col-span-1 bg-red-700 rounded-2xl p-5 text-[#eff5f1] flex flex-col justify-between min-h-[110px]">
               <div className="flex items-center justify-between">
                 <span className="text-xs text-white/60 uppercase tracking-widest">
-                  Total recebido
+                  Total gasto
                 </span>
               </div>
               <div>
@@ -108,7 +108,7 @@ export const Despesas = () => {
             <div className="bg-white rounded-2xl p-5 flex flex-col justify-between min-h-[110px] border border-[#e4e0d2]">
               <div className="flex items-center justify-between">
                 <span className="text-xs text-[#9a9a94] uppercase tracking-widest">
-                  Receita média
+                  Despesa média
                 </span>
               </div>
               <div>
@@ -131,7 +131,7 @@ export const Despesas = () => {
             <div className="bg-white rounded-2xl p-5 flex flex-col justify-between min-h-[110px] border border-[#e4e0d2]">
               <div className="flex items-center justify-between">
                 <span className="text-xs text-[#9a9a94] uppercase tracking-widest">
-                  Maior Receita
+                  Maior despesa
                 </span>
               </div>
               <div>

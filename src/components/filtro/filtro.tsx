@@ -63,7 +63,7 @@ export const Filtro = ({
           onChange={(e) => setBusca(e.target.value)}
           className="w-full bg-white rounded-xl pl-9 pr-3 py-2 text-xs text-[#1a1a18] border border-[#e4e0d2] placeholder:text-[#9a9a94] focus:outline-none focus:ring-1 focus:ring-[#2d6a4f]"
           type="text"
-          placeholder="Buscar receita..."
+          placeholder="Buscar..."
         />
       </div>
     </div>
