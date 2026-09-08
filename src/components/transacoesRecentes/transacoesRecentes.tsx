@@ -46,11 +46,17 @@ export const TransacoesRecentes = ({ transaction, atualizar }: Props) => {
             <div className="flex gap-4 items-center">
               {transactions.type === "receita" ? (
                 <span className="text-sm font-semibold text-emerald-600 tabular-nums">
-                  + R$ {transactions.value.toFixed(2)}
+                  + {transactions.value.toLocaleString("pt-BR",{
+                    style:'currency',
+                    currency: 'BRL'
+                  })}
                 </span>
               ) : (
                 <span className="text-sm font-semibold text-rose-600 tabular-nums">
-                  - R$ {transactions.value.toFixed(2)}
+                  - {transactions.value.toLocaleString("pt-BR",{
+                    style: 'currency',
+                    currency: 'BRL'
+                  })}
                 </span>
               )}
 
