@@ -22,6 +22,7 @@ import {
   type FormInput,
   type FormData,
 } from "../adicionarTransacao/schema";
+import { toast } from "sonner";
 
 type PropsEditar = {
   open: boolean;
@@ -63,9 +64,9 @@ export function EditarTransaction({
       });
       onOpenChange(false);
       await atualizar();
-    } catch (error) {
-      console.error("ERRO:", error);
-      alert("Erro ao editar");
+      toast.success("Transação editada com sucesso");
+    } catch {
+      toast.error("Ocorreu um erro. Tente novamente.");
     }
   };
 

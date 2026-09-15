@@ -8,6 +8,7 @@ import api from "@/services/api";
 import { Menu, MoreHorizontal, Plus, TrendingUp } from "lucide-react";
 import { useEffect, useState } from "react";
 import { TransacoesRecentes } from "@/components/transacoesRecentes/transacoesRecentes";
+import { toast } from "sonner";
 
 export const Receita = () => {
   const [openAdicionar, setOpenAdicionar] = useState(false);
@@ -21,8 +22,8 @@ export const Receita = () => {
       const data = resultado.data;
       const filtrar = data.filter((item: Transacao) => item.type === "receita");
       setReceita(filtrar);
-    } catch (error) {
-      console.log(error);
+    } catch {
+      toast.error("Ocorreu um erro. Tente novamente.");
     }
   };
 

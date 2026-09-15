@@ -8,6 +8,7 @@ import api from "@/services/api";
 import { Menu, Plus } from "lucide-react";
 import { useEffect, useState } from "react";
 import { TransacoesRecentes } from "@/components/transacoesRecentes/transacoesRecentes";
+import { toast } from "sonner";
 
 export const Despesas = () => {
   const [receita, setReceita] = useState<Transacao[]>([]);
@@ -21,8 +22,8 @@ export const Despesas = () => {
       const data = response?.data;
       const filter = data.filter((item: Transacao) => item.type === "despesa");
       setReceita(filter);
-    } catch (err) {
-      console.log(err);
+    } catch {
+      toast.error("Ocorreu um erro. Tente novamente.");
     }
   };
 

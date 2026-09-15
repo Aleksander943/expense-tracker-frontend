@@ -20,6 +20,7 @@ import { UseAuth } from "@/hooks/Auth";
 import type { Valores } from "./type/valores";
 import type { Transacao } from "@/app/type/type";
 import { TransacoesRecentes } from "@/components/transacoesRecentes/transacoesRecentes";
+import { toast } from "sonner";
 
 const navItems = [
   { icon: LayoutDashboard, label: "Dashboard", active: true },
@@ -62,8 +63,8 @@ export function Dashboard() {
       });
 
       setTransacion(requisicao);
-    } catch (error) {
-      console.log(error);
+    } catch {
+      toast.error("Ocorreu um erro. Tente novamente.");
     }
   };
 
