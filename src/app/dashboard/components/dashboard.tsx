@@ -3,15 +3,9 @@
 import { NavBar } from "@/components/navbar/navbar";
 import api from "@/services/api";
 import {
-  LineChart,
-  LayoutDashboard,
-  ArrowUpRight,
-  ArrowDownLeft,
-  Wallet,
   MoreHorizontal,
   TrendingUp,
   TrendingDown,
-  Menu,
   Plus,
 } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -22,18 +16,9 @@ import type { Transacao } from "@/app/type/type";
 import { TransacoesRecentes } from "@/components/transacoesRecentes/transacoesRecentes";
 import { toast } from "sonner";
 
-const navItems = [
-  { icon: LayoutDashboard, label: "Dashboard", active: true },
-  { icon: ArrowUpRight, label: "Receitas", active: false },
-  { icon: ArrowDownLeft, label: "Despesas", active: false },
-  { icon: Wallet, label: "Contas", active: false },
-  { icon: LineChart, label: "Relatórios", active: false },
-];
-
 export function Dashboard() {
   const { user } = UseAuth();
   const [openAdicionar, setOpenAdicionar] = useState(false);
-  const [mobileMenuOpen, setMobileMenu] = useState(false);
   const [transaction, setTransacion] = useState<Transacao[]>([]);
   const [valor, setValor] = useState<Valores>({
     Receita: 0,
@@ -74,22 +59,10 @@ export function Dashboard() {
 
   return (
     <div className="min-h-screen bg-[#f3f1ea] flex font-[Inter,system-ui,sans-serif] text-[#1a1a18]">
-      {mobileMenuOpen && (
-        <div
-          className="fixed inset-0 bg-black/40 z-30 lg:hidden"
-          onClick={() => setMobileMenu(false)}
-        />
-      )}
       <NavBar />
       <main className="flex-1 min-w-0 flex flex-col">
         <header className="flex items-center justify-between px-4 sm:px-8 py-4 bg-[#f3f1ea] border-b border-[#e4e0d2] sticky top-0 z-20">
           <div className="flex items-center gap-3">
-            <button
-              className="lg:hidden p-2 rounded-xl hover:bg-[#e4e0d2] transition-colors"
-              onClick={() => setMobileMenu(true)}
-            >
-              <Menu className="w-4 h-4 text-[#9a9a94]" />
-            </button>
             <div>
               <h1
                 className="text-lg sm:text-3xl font-semibold text-[#1a1a18] tracking-tight"
@@ -218,20 +191,6 @@ export function Dashboard() {
           />
         </div>
 
-        {/* ── Bottom nav — mobile ─────────────────────── */}
-        <nav className="lg:hidden flex items-center justify-around border-t border-[#e4e0d2] bg-white px-2 py-3 sticky bottom-0 z-20">
-          {navItems.map(({ icon: Icon, label, active }) => (
-            <button
-              key={label}
-              className={`flex flex-col items-center gap-1 px-3 py-1 rounded-xl transition-colors ${
-                active ? "text-[#2d6a4f]" : "text-[#9a9a94]"
-              }`}
-            >
-              <Icon className="w-5 h-5" />
-              <span className="text-[10px] font-medium">{label}</span>
-            </button>
-          ))}
-        </nav>
       </main>
     </div>
   );

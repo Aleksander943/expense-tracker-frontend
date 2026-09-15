@@ -10,14 +10,10 @@ import {
   LineChart,
   LogOut,
   Settings,
-  X,
 } from "lucide-react";
-import { useState } from "react";
 import Cookies from "js-cookie";
 
 export const NavBar = () => {
-  const [sidebarOpen] = useState(true);
-  const [mobileMenuOpen, setMobileMenu] = useState(false);
   const pathname = usePathname();
   const { user } = UseAuth();
   const router = useRouter();
@@ -26,8 +22,7 @@ export const NavBar = () => {
     {
       icon: LayoutDashboard,
       label: "Dashboard",
-      active: true,
-      path: "dashboard",
+      path: "/dashboard",
     },
     {
       icon: ArrowUpRight,
@@ -47,37 +42,16 @@ export const NavBar = () => {
   ];
 
   return (
-    <aside
-      className={`
-          fixed lg:relative z-40 lg:z-auto
-          flex-shrink-0 flex flex-col h-full lg:h-auto min-h-screen
-          bg-gradient-to-b from-[#16302a] via-[#1f4d3a] to-[#2d6a4f]
-          text-[#eff5f1] transition-all duration-300 ease-in-out
-          ${mobileMenuOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}
-          ${sidebarOpen ? "w-fit min-w-56" : "lg:w-16 w-56"}
-        `}
-    >
+    <>
+      <aside className="hidden min-h-screen w-56 flex-shrink-0 flex-col bg-gradient-to-b from-[#16302a] via-[#1f4d3a] to-[#2d6a4f] text-[#eff5f1] lg:relative lg:flex">
       {/* logo */}
       <div className="flex items-center gap-2.5 px-4 py-5 border-b border-white/10">
         <div className="w-8 h-8 rounded-lg bg-white/10 border border-white/20 flex items-center justify-center flex-shrink-0">
           <LineChart className="w-4 h-4 text-[#eff5f1]" />
         </div>
-        <span
-          className={`font-semibold tracking-tight text-sm whitespace-nowrap transition-opacity duration-200 ${
-            sidebarOpen
-              ? "opacity-100"
-              : "lg:opacity-0 lg:w-0 lg:overflow-hidden"
-          }`}
-        >
+        <span className="whitespace-nowrap text-sm font-semibold tracking-tight">
           Finly
         </span>
-        {/* close on mobile */}
-        <button
-          className="ml-auto lg:hidden text-white/60 hover:text-white"
-          onClick={() => setMobileMenu(false)}
-        >
-          <X className="w-4 h-4" />
-        </button>
       </div>
 
       {/* nav */}
@@ -89,7 +63,6 @@ export const NavBar = () => {
             <Link
               key={label}
               href={path}
-              onClick={() => setMobileMenu(false)}
               className={`
           flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium
           transition-colors text-left w-full
@@ -102,15 +75,7 @@ export const NavBar = () => {
             >
               <Icon className="w-4 h-4 flex-shrink-0" />
 
-              <span
-                className={`whitespace-nowrap transition-opacity duration-200 ${
-                  sidebarOpen
-                    ? "opacity-100"
-                    : "lg:opacity-0 lg:w-0 lg:overflow-hidden"
-                }`}
-              >
-                {label}
-              </span>
+              <span className="whitespace-nowrap">{label}</span>
             </Link>
           );
         })}
@@ -122,13 +87,7 @@ export const NavBar = () => {
           <div className="w-7 h-7 rounded-full bg-[#52916d] flex items-center justify-center text-xs font-semibold flex-shrink-0 text-white">
             {user?.name ? user.name.charAt(0).toUpperCase() : ""}
           </div>
-          <div
-            className={`text-left min-w-0 flex-1 transition-opacity duration-200 ${
-              sidebarOpen
-                ? "opacity-100"
-                : "lg:opacity-0 lg:w-0 lg:overflow-hidden"
-            }`}
-          >
+          <div className="min-w-0 flex-1 text-left">
             <p className="text-xs font-medium text-white truncate">
               {user?.name
                 ? user.name.charAt(0).toUpperCase() +
@@ -139,17 +98,19 @@ export const NavBar = () => {
           </div>
         </button>
 
-        <div
-          className={`flex mt-2 gap-1 ${sidebarOpen ? "justify-end px-1" : "justify-center"}`}
-        >
-          <button className="p-2 rounded-lg hover:bg-white/10 text-white/40 hover:text-white/80 transition-colors">
+        <div className="mt-2 flex justify-end gap-1 px-1">
+          <button
+            aria-label="Configurações"
+            className="p-2 rounded-lg hover:bg-white/10 text-white/40 hover:text-white/80 transition-colors"
+          >
             <Settings className="w-3.5 h-3.5" />
           </button>
 
           <button
+            aria-label="Sair"
             onClick={() => {
               Cookies.remove("token");
-              router.replace("/")
+              router.replace("/");
             }}
             className="p-2 rounded-lg hover:bg-white/10 text-white/40 hover:text-white/80 transition-colors"
           >
@@ -157,6 +118,26 @@ export const NavBar = () => {
           </button>
         </div>
       </div>
-    </aside>
+      </aside>
+
+      <nav className="fixed inset-x-0 bottom-0 z-40 flex items-center justify-around border-t border-[#e4e0d2] bg-white px-2 py-3 lg:hidden">
+        {navItems.map(({ icon: Icon, label, path }) => {
+          const active = pathname === path;
+
+          return (
+            <Link
+              key={label}
+              href={path}
+              className={`flex flex-col items-center gap-1 rounded-xl px-3 py-1 text-[10px] font-medium transition-colors ${
+                active ? "text-[#2d6a4f]" : "text-[#9a9a94]"
+              }`}
+            >
+              <Icon className="h-5 w-5" />
+              <span>{label}</span>
+            </Link>
+          );
+        })}
+      </nav>
+    </>
   );
 };
