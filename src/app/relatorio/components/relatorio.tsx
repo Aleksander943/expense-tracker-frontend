@@ -8,7 +8,6 @@ import { useEffect, useState } from "react";
 import type { Transacao } from "@/app/type/type";
 import { Mes } from "../../type/data";
 import { AdicionarTransaction } from "@/components/adicionarTransacao/adicionarTransaction";
-import { Categorias } from "@/components/categorias/categorias";
 
 type transacaoType = {
   Receita: number;
@@ -150,7 +149,7 @@ export const Relatorio = () => {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 gap-4 lg:grid-cols-[minmax(0,1fr)_320px] items-start">
+          <div className="grid grid-cols-1 gap-4 items-start">
             <div className="overflow-hidden rounded-2xl border border-[#e4e0d2] bg-white shadow-sm">
               <div className="flex items-center justify-between border-b border-[#f0ece0] px-5 py-4 sm:px-6">
                 <div className="flex items-center gap-5">
@@ -166,8 +165,6 @@ export const Relatorio = () => {
               </div>
               <Grafico dadosPorMes={dadosPorMes} />
             </div>
-
-            <Categorias />
           </div>
 
           <div className="flex justify-end m-10">

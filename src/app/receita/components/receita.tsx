@@ -7,7 +7,6 @@ import { NavBar } from "@/components/navbar/navbar";
 import api from "@/services/api";
 import { Menu, MoreHorizontal, Plus, TrendingUp } from "lucide-react";
 import { useEffect, useState } from "react";
-import { Categorias } from "@/components/categorias/categorias";
 import { TransacoesRecentes } from "@/components/transacoesRecentes/transacoesRecentes";
 
 export const Receita = () => {
@@ -182,7 +181,7 @@ export const Receita = () => {
             colorButton="bg-gradient-to-br from-[#1f4d3a] to-[#2d6a4f] text-white"
           />
 
-          <div className="grid grid-cols-1 gap-4 lg:grid-cols-[minmax(0,1fr)_320px] items-start">
+          <div className="grid grid-cols-1 gap-4 items-start">
             <div className="overflow-hidden rounded-2xl border border-[#e4e0d2] bg-white shadow-sm">
               <div className="flex items-center justify-between border-b border-[#f0ece0] px-5 py-4 sm:px-6">
                 <h2
@@ -200,7 +199,6 @@ export const Receita = () => {
                 atualizar={receitaTotal}
               />
             </div>
-            <Categorias />
           </div>
 
           <div className="flex justify-end m-10">

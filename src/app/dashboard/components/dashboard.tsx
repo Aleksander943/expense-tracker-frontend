@@ -19,7 +19,6 @@ import { AdicionarTransaction } from "../../../components/adicionarTransacao/adi
 import { UseAuth } from "@/hooks/Auth";
 import type { Valores } from "./type/valores";
 import type { Transacao } from "@/app/type/type";
-import { Categorias } from "@/components/categorias/categorias";
 import { TransacoesRecentes } from "@/components/transacoesRecentes/transacoesRecentes";
 
 const navItems = [
@@ -182,7 +181,7 @@ export function Dashboard() {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 gap-4 lg:grid-cols-[minmax(0,1fr)_320px] items-start">
+          <div className="grid grid-cols-1 gap-4 items-start">
             <div className="overflow-hidden rounded-2xl border border-[#e4e0d2] bg-white shadow-sm">
               <div className="flex items-center justify-between border-b border-[#f0ece0] px-5 py-4 sm:px-6">
                 <h2
@@ -197,7 +196,6 @@ export function Dashboard() {
               </div>
               <TransacoesRecentes atualizar={Informacoes} transaction={transaction} />
             </div>
-            <Categorias />
           </div>
         </div>
 

@@ -7,7 +7,6 @@ import { NavBar } from "@/components/navbar/navbar";
 import api from "@/services/api";
 import { Menu, Plus } from "lucide-react";
 import { useEffect, useState } from "react";
-import { Categorias } from "@/components/categorias/categorias";
 import { TransacoesRecentes } from "@/components/transacoesRecentes/transacoesRecentes";
 
 export const Despesas = () => {
@@ -179,7 +178,7 @@ export const Despesas = () => {
             colorButton="bg-red-700 text-white"
           />
 
-          <div className="grid grid-cols-1 gap-4 lg:grid-cols-[minmax(0,1fr)_320px] items-start">
+          <div className="grid grid-cols-1 gap-4 items-start">
             <div className="overflow-hidden rounded-2xl border border-[#e4e0d2] bg-white shadow-sm">
               <div className="flex items-center justify-between border-b border-[#f0ece0] px-5 py-4 sm:px-6">
                 <h2
@@ -192,8 +191,6 @@ export const Despesas = () => {
 
               <TransacoesRecentes transaction={filtroBusca} atualizar={infoDespesas} />
             </div>
-
-            <Categorias />
           </div>
 
           <div className="flex justify-end m-10">
