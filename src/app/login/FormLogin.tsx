@@ -36,7 +36,7 @@ export function Login() {
         password: data.password,
       });
 
-      toast.success("Resposta da API:");
+      toast.success("Logado com sucesso!");
 
       const { token } = response.data;
       await login(token);
