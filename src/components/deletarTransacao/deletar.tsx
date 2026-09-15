@@ -9,6 +9,7 @@ import {
   DialogTitle,
 } from "../ui/dialog";
 import type { Transacao } from "@/app/type/type";
+import { toast } from "sonner";
 
 
 interface propsDelete {
@@ -30,8 +31,9 @@ export const DeletarTransacao = ({
       await api.delete(`/transaction/${id}`);
       onOpenChange(false);
       atualizar();
+      toast.success("Transação excluída com sucesso");
     } catch {
-      alert("Erro ao deletar");
+      toast.error("Não foi possível excluir a transação");
     }
   };
 

@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import type { Transacao } from "@/app/type/type";
 import { Mes } from "../../type/data";
 import { AdicionarTransaction } from "@/components/adicionarTransacao/adicionarTransaction";
+import { toast } from "sonner";
 
 type transacaoType = {
   Receita: number;
@@ -72,8 +73,8 @@ export const Relatorio = () => {
       });
 
       setDadosPorMes(dadosPorMes);
-    } catch (error) {
-      console.log(error);
+    } catch {
+      toast.error("Ocorreu um erro. Tente novamente.");
     }
   };
 

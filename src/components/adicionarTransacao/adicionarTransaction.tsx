@@ -21,6 +21,7 @@ import { z } from "zod";
 
 import api from "@/services/api";
 import { schema } from "./schema";
+import { toast } from "sonner";
 
 type FormData = z.input<typeof schema>;
 
@@ -58,13 +59,11 @@ export function AdicionarTransaction({
   const onSubmit = async (data: FormData) => {
     try {
       await api.post("/transaction", data);
-      console.log("Nova transação adicionada");
       closeDialog(false);
       atualizar();
-    } catch (err) {
-      console.log(
-        `Tivemos um erro na hora de adicionar nova informação ${err}`,
-      );
+      toast.success("Transação adicionada com sucesso");
+    } catch {
+      toast.error("Ocorreu um erro. Tente novamente.");
     }
   };
 

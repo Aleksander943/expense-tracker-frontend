@@ -8,6 +8,7 @@ import { useForm, type SubmitHandler } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { Estilizacao } from "./estilizacao";
 import api from "@/services/api";
+import { toast } from "sonner";
 
 type FormData = {
   name: string;
@@ -29,19 +30,19 @@ export function FormRegister() {
       setLoading(true);
       setError("");
 
-      const response = await api.post("/users", {
+      await api.post("/users", {
         name: data.name,
         email: data.email,
         password: data.password,
       });
 
-      console.log("Cadastro realizado com sucesso!", response.data);
+      toast.success("Cadastro realizado com sucesso!");
 
       router.push("/");
-    } catch (error) {
+    } catch {
       setLoading(false);
       setError("");
-      console.log("Erro na API", error);
+      toast.error("Ocorreu um erro. Tente novamente.");
     }
   };
 

@@ -10,6 +10,7 @@ import api from "@/services/api";
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
 import { UseAuth } from "@/hooks/Auth";
+import { toast } from "sonner";
 
 type Formulario = {
   email: string;
@@ -35,7 +36,7 @@ export function Login() {
         password: data.password,
       });
 
-      console.log("Resposta da API:", response.data);
+      toast.success("Resposta da API:");
 
       const { token } = response.data;
       await login(token);
