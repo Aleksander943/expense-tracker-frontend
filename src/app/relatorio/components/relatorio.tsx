@@ -99,7 +99,7 @@ export const Relatorio = () => {
               >
                 Relatório
               </h1>
-              <p>Visão geral da sua saúde finaceira</p>
+              <p>Visão geral da sua saúde financeira</p>
             </div>
           </div>
         </header>
