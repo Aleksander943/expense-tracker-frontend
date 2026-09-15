@@ -194,7 +194,7 @@ export function Dashboard() {
                   <MoreHorizontal className="h-4 w-4 text-[#9a9a94]" />
                 </button>
               </div>
-              <TransacoesRecentes atualizar={Informacoes} transaction={transaction} />
+              <TransacoesRecentes atualizar={Informacoes} transaction={transaction.slice(0, 5)} />
             </div>
           </div>
         </div>
