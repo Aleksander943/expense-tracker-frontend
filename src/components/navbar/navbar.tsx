@@ -2,7 +2,7 @@
 
 import { UseAuth } from "@/hooks/Auth";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import {
   ArrowDownLeft,
   ArrowUpRight,
@@ -20,6 +20,7 @@ export const NavBar = () => {
   const [mobileMenuOpen, setMobileMenu] = useState(false);
   const pathname = usePathname();
   const { user } = UseAuth();
+  const router = useRouter();
 
   const navItems = [
     {
@@ -148,7 +149,7 @@ export const NavBar = () => {
           <button
             onClick={() => {
               Cookies.remove("token");
-              window.location.reload();
+              router.replace("/")
             }}
             className="p-2 rounded-lg hover:bg-white/10 text-white/40 hover:text-white/80 transition-colors"
           >
