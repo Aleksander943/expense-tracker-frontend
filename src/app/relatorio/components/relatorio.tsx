@@ -1,7 +1,7 @@
 "use client";
 
 import { NavBar } from "@/components/navbar/navbar";
-import { Menu, Plus } from "lucide-react";
+import { Plus } from "lucide-react";
 import { Grafico } from "./graficoEstatistica";
 import api from "@/services/api";
 import { useEffect, useState } from "react";

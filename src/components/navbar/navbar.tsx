@@ -10,9 +10,7 @@ import {
   LayoutDashboard,
   LineChart,
   LogOut,
-  Settings,
 } from "lucide-react";
-import Cookies from "js-cookie";
 
 export const NavBar = () => {
   const pathname = usePathname();

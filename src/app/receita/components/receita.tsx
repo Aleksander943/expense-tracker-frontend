@@ -5,7 +5,7 @@ import type { Transacao } from "@/app/type/type";
 import { Filtro } from "@/components/filtro/filtro";
 import { NavBar } from "@/components/navbar/navbar";
 import api from "@/services/api";
-import { Menu, MoreHorizontal, Plus, TrendingUp } from "lucide-react";
+import { MoreHorizontal, Plus, TrendingUp } from "lucide-react";
 import { useEffect, useState } from "react";
 import { TransacoesRecentes } from "@/components/transacoesRecentes/transacoesRecentes";
 import { toast } from "sonner";

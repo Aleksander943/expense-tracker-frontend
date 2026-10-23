@@ -1,7 +1,6 @@
 "use client";
 
 import {
-  formatBytes,
   useFileUpload,
   type FileWithPreview,
 } from "@/hooks/use-file-upload";
