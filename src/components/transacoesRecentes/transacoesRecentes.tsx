@@ -47,9 +47,9 @@ export const TransacoesRecentes = ({ transaction, atualizar }: Props) => {
             {transacoes.map((transactions) => (
               <div
                 key={transactions.id}
-                className="group flex items-center justify-between px-6 py-4 transition-colors hover:bg-gray-50"
+                className="group flex items-start gap-3 px-5 py-4 transition-colors hover:bg-gray-50 sm:px-6"
               >
-                <div className="flex items-center gap-3">
+                <div className="flex min-w-0 flex-1 items-center gap-3">
                   <div
                     className={`flex h-9 w-9 items-center justify-center rounded-full text-xs font-semibold ${
                       transactions.type === "receita"
@@ -60,8 +60,8 @@ export const TransacoesRecentes = ({ transaction, atualizar }: Props) => {
                     {transactions.type === "receita" ? "↑" : "↓"}
                   </div>
 
-                  <div>
-                    <p className="text-sm font-medium capitalize text-gray-800">
+                  <div className="min-w-0">
+                    <p className="truncate text-sm font-medium capitalize text-gray-800">
                       {transactions.description}
                     </p>
 
@@ -78,9 +78,9 @@ export const TransacoesRecentes = ({ transaction, atualizar }: Props) => {
                     </div>
                   </div>
                 </div>
-                <div className="flex gap-4 items-center">
+                <div className="flex shrink-0 flex-col items-end gap-1">
                   {transactions.type === "receita" ? (
-                    <span className="text-sm font-semibold text-emerald-600 tabular-nums">
+                    <span className="whitespace-nowrap text-sm font-semibold text-emerald-600 tabular-nums">
                       +{" "}
                       {transactions.value.toLocaleString("pt-BR", {
                         style: "currency",
@@ -88,7 +88,7 @@ export const TransacoesRecentes = ({ transaction, atualizar }: Props) => {
                       })}
                     </span>
                   ) : (
-                    <span className="text-sm font-semibold text-rose-600 tabular-nums">
+                    <span className="whitespace-nowrap text-sm font-semibold text-rose-600 tabular-nums">
                       -{" "}
                       {transactions.value.toLocaleString("pt-BR", {
                         style: "currency",
@@ -97,25 +97,29 @@ export const TransacoesRecentes = ({ transaction, atualizar }: Props) => {
                     </span>
                   )}
 
-                  <button
-                    onClick={() => {
-                      setOpenEditar(true);
-                      setTransacaoSelecionada(transactions);
-                    }}
-                    className="p-1 text-[#64748B] rounded-lg hover:bg-[#f0ece0] transition-colors"
-                  >
-                    <Pencil className="h-4" />
-                  </button>
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={() => {
+                        setOpenEditar(true);
+                        setTransacaoSelecionada(transactions);
+                      }}
+                      className="rounded-lg p-1 text-[#64748B] transition-colors hover:bg-[#f0ece0]"
+                      aria-label="Editar transação"
+                    >
+                      <Pencil className="h-4 w-4" />
+                    </button>
 
-                  <button
-                    onClick={() => {
-                      setOpenDelete(true);
-                      setTransacaoSelecionada(transactions);
-                    }}
-                    className="p-1 text-[#DC2626] rounded-lg hover:bg-[#f0ece0] transition-colors"
-                  >
-                    <Trash className="h-4" />
-                  </button>
+                    <button
+                      onClick={() => {
+                        setOpenDelete(true);
+                        setTransacaoSelecionada(transactions);
+                      }}
+                      className="rounded-lg p-1 text-[#DC2626] transition-colors hover:bg-[#f0ece0]"
+                      aria-label="Apagar transação"
+                    >
+                      <Trash className="h-4 w-4" />
+                    </button>
+                  </div>
                 </div>
               </div>
             ))}
