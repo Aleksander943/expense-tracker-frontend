@@ -1,5 +1,8 @@
+"use client";
+
 import api from "@/services/api";
 import Cookies from "js-cookie";
+import { useRouter } from "next/navigation";
 import { createContext, useEffect, useState, type ReactNode } from "react";
 
 interface User {
@@ -11,6 +14,7 @@ interface AuthContextData {
   user: User | null;
   loading: boolean;
   login: (token: string) => Promise<void>;
+  logout: () => void;
 }
 
 export const AuthContext = createContext({} as AuthContextData);
@@ -18,6 +22,7 @@ export const AuthContext = createContext({} as AuthContextData);
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const router = useRouter();
 
   useEffect(() => {
     const loadStorageData = async () => {
@@ -48,6 +53,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setUser(response.data);
   };
 
+  const logout = () => {
+    Cookies.remove("token");
+    delete api.defaults.headers.common.Authorization;
+    setUser(null);
+    router.replace("/");
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-[#f3f1ea]">
@@ -57,7 +69,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }
 
   return (
-    <AuthContext.Provider value={{ user, loading, login }}>
+    <AuthContext.Provider value={{ user, loading, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
