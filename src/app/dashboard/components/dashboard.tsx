@@ -2,12 +2,7 @@
 
 import { NavBar } from "@/components/navbar/navbar";
 import api from "@/services/api";
-import {
-  MoreHorizontal,
-  TrendingUp,
-  TrendingDown,
-  Plus,
-} from "lucide-react";
+import { MoreHorizontal, TrendingUp, TrendingDown, Plus } from "lucide-react";
 import { useEffect, useState } from "react";
 import { AdicionarTransaction } from "../../../components/adicionarTransacao/adicionarTransaction";
 import { UseAuth } from "@/hooks/Auth";
@@ -61,26 +56,25 @@ export function Dashboard() {
     <div className="min-h-screen bg-[#f3f1ea] flex font-[Inter,system-ui,sans-serif] text-[#1a1a18]">
       <NavBar />
       <main className="flex-1 min-w-0 flex flex-col">
-        <header className="flex items-center justify-between px-4 sm:px-8 py-4 bg-[#f3f1ea] border-b border-[#e4e0d2] sticky top-0 z-20">
+        <header className="flex items-center justify-between px-4 sm:px-8 py-4 bg-[#f3f1ea] border-b border-[#e4e0d2] sticky z-20">
           <div className="flex items-center gap-3">
             <div>
               <h1
                 className="text-lg sm:text-3xl font-semibold text-[#1a1a18] tracking-tight"
                 style={{ fontFamily: "'Georgia', serif" }}
               >
-                Bem-vindo de volta,{" "}
+                Bem-vindo,{" "}
                 {user?.name
                   ? user.name.charAt(0).toUpperCase() +
                     user.name.slice(1).toLowerCase()
                   : ""}{" "}
                 !
               </h1>
-              <p>Acompanhe suas receitas, despesas e metas em um só lugar.</p>
             </div>
           </div>
         </header>
 
-        <div className="flex-1 overflow-y-auto px-4 sm:px-8 py-6 space-y-5">
+        <div className="flex-1 overflow-y-auto px-4 pb-24 py-6 sm:px-8 sm:pb-6 space-y-5">
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div className="sm:col-span-1 bg-gradient-to-br from-[#1f4d3a] to-[#2d6a4f] rounded-2xl p-5 text-[#eff5f1] flex flex-col justify-between min-h-[110px]">
               <div className="flex items-center justify-between">
@@ -168,7 +162,10 @@ export function Dashboard() {
                   <MoreHorizontal className="h-4 w-4 text-[#9a9a94]" />
                 </button>
               </div>
-              <TransacoesRecentes atualizar={Informacoes} transaction={transaction.slice(0, 5)} />
+              <TransacoesRecentes
+                atualizar={Informacoes}
+                transaction={transaction.slice(0, 5)}
+              />
             </div>
           </div>
         </div>
@@ -176,7 +173,7 @@ export function Dashboard() {
         <div className="flex justify-end m-10">
           <button
             onClick={() => setOpenAdicionar(true)}
-            className="group fixed bottom-18 right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-[#1f4d3a] to-[#2d6a4f] text-white shadow-lg transition-all duration-300 hover:w-36 hover:shadow-xl"
+            className="group fixed bottom-20 right-5 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-[#1f4d3a] to-[#2d6a4f] text-white shadow-lg transition-all duration-300 hover:w-36 hover:shadow-xl sm:bottom-6 sm:right-6"
           >
             <Plus className="h-5 w-5 shrink-0 transition-transform duration-300 group-hover:rotate-90" />
 
@@ -190,7 +187,6 @@ export function Dashboard() {
             atualizar={Informacoes}
           />
         </div>
-
       </main>
     </div>
   );
