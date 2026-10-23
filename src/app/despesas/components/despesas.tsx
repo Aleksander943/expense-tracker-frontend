@@ -59,14 +59,11 @@ export const Despesas = () => {
 
   return (
     <div className="min-h-screen bg-[#f3f1ea] flex font-[Inter,system-ui,sans-serif] text-[#1a1a18]">
-      <div className="fixed inset-0 bg-black/40 z-30 lg:hidden" />
+      <div className="fixed inset-0 z-30 lg:hidden" />
       <NavBar />
       <main className="flex-1 min-w-0 flex flex-col">
-        <header className="flex items-center justify-between px-4 sm:px-8 py-4 bg-[#f3f1ea] border-b border-[#e4e0d2] sticky top-0 z-20">
+        <header className="flex items-center justify-between px-4 sm:px-8 py-4 bg-[#f3f1ea] border-b border-[#e4e0d2] sticky z-20">
           <div className="flex items-center gap-3">
-            <button className="lg:hidden p-2 rounded-xl hover:bg-[#e4e0d2] transition-colors">
-              <Menu className="w-4 h-4 text-[#9a9a94]" />
-            </button>
             <div>
               <h1
                 className="text-lg sm:text-3xl font-semibold text-[#1a1a18] tracking-tight"
