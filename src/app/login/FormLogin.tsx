@@ -94,7 +94,7 @@ export function Login() {
                 type="email"
                 {...register("email")}
                 placeholder="seu@email.com"
-                className="bg-white w-full pl-9 pr-3 py-3 border border-[#ebebeb] rounded-xl text-sm text-[#1a1a18] placeholder-[#c4c4bc] outline-none transition-all focus:border-[#2d6a4f] focus:ring-2 focus:ring-[#2d6a4f]/10"
+                className="bg-white w-full pl-9 pr-3 py-3 border border-[#2d6a4f] rounded-xl text-sm text-[#1a1a18] placeholder-[#c4c4bc] outline-none transition-all focus:border-[#2d6a4f] focus:ring-2 focus:ring-[#2d6a4f]/10"
               />
             </div>
 
@@ -106,7 +106,7 @@ export function Login() {
                 type={showPassword ? "text" : "password"}
                 {...register("password")}
                 placeholder="********"
-                className="bg-white w-full pl-9 pr-14 py-3 border border-[#ebebeb] rounded-xl text-sm text-[#1a1a18] placeholder-[#c4c4bc] outline-none transition-all focus:border-[#2d6a4f] focus:ring-2 focus:ring-[#2d6a4f]/10"
+                 className="bg-white w-full pl-9 pr-3 py-3 border border-[#2d6a4f] rounded-xl text-sm text-[#1a1a18] placeholder-[#c4c4bc] outline-none transition-all focus:border-[#2d6a4f] focus:ring-2 focus:ring-[#2d6a4f]/10"
               />
               <button
                 type="button"
